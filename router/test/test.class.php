@@ -7,7 +7,7 @@ use util\Input;
 class Test extends Router {
 
 	public function get() {
-		return "hello daisy";
+		return "hello jackong";
 	}
 
 	public function post() {

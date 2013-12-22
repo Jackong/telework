@@ -1,7 +1,8 @@
 <?php
 namespace router\test;
 
-use common\Router;
+use router\Router;
+use util\Input;
 
 class Test extends Router {
 
@@ -10,6 +11,6 @@ class Test extends Router {
 	}
 
 	public function post() {
-		return $this->input("param");
+		return Input::get("param");
 	}
 }

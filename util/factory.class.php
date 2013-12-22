@@ -5,11 +5,12 @@
  * Time: 下午9:45
  */
 
-namespace common;
+namespace util;
 
 
 use common\formatter\Json;
 use common\formatter\Xml;
+use common\Formatter;
 
 class Factory {
     /**

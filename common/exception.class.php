@@ -10,4 +10,4 @@ namespace common;
 
 class Exception extends \Exception {
     const INVALID_INPUT = 1;
-} 
+}

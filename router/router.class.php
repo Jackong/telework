@@ -1,27 +1,8 @@
 <?php
-namespace common;
+namespace router;
 class Router {
     public function __construct() {
         $this->status();
-    }
-
-    public function input($name, $pattern = null, $default = null) {
-        if (!isset($_REQUEST[$name])) {
-            if (is_null($default)) {
-                $this->status(404);
-                throw new Exception("invalid parameter $name", Exception::INVALID_INPUT);
-            }
-            return $default;
-        }
-        $value = $_REQUEST[$name];
-        if (is_null($pattern)) {
-            return $value;
-        }
-        if (preg_match($pattern, $value, $matches)) {
-            return $value;
-        }
-        $this->status(404);
-        throw new Exception("invalid parameter $name", Exception::INVALID_INPUT);
     }
 
 	public function get() {

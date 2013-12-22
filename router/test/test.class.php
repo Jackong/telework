@@ -6,7 +6,7 @@ use common\Router;
 class Test extends Router {
 
 	public function get() {
-		return "hello jackong";
+		return "hello daisy";
 	}
 
 	public function post() {

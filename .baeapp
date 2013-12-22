@@ -1,0 +1,13 @@
+alias: []
+appid: appid3a4r7f696e
+appname: telework
+cdatetime: '1387697924'
+createtype: web
+domain: telework.duapp.com
+inum: '1'
+lang_type: php
+name: wechat
+release_revision: 8cb1abba2d92f7f6457fbcf4b241b0e9abdbd83e
+repos_url: https://git.duapp.com/appid3a4r7f696e
+status: '4'
+version_type: git

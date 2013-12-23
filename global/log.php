@@ -5,7 +5,7 @@
  * Time: 下午7:33
  */
 
-require_once "../lib/service/log/BaeLog.class.php";
+require_once "BaeLog.class.php";
 $secret = array("user"=>\ServiceConf::$aksk['ak'],"passwd"=>ServiceConf::$aksk['sk'] );
 
 $log = BaeLog::getInstance($secret);

@@ -5,10 +5,6 @@
  * Time: 下午7:33
  */
 
-putenv("BAE_ENV_LOG_HOST", "localhost");
-putenv("BAE_ENV_LOG_PORT", "");
-putenv("BAE_ENV_APPID", ServiceConf::$app_id);
-
 require_once "../lib/service/log/BaeLog.class.php";
 $secret = array("user"=>\ServiceConf::$aksk['ak'],"passwd"=>ServiceConf::$aksk['sk'] );
 

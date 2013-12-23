@@ -7,10 +7,11 @@ use util\Input;
 class Test extends Router {
 
 	public function get() {
-		return "hello jackong";
-	}
+        return "hello jackong";
+    }
 
 	public function post() {
-		return Input::get("param");
+        logger()->Debug("get param");
+        return Input::get("param");
 	}
 }

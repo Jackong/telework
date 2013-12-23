@@ -6,9 +6,11 @@
  */
 
 require_once PROJECT . "/lib/service/log/BaeLog.class.php";
-$secret = array("user"=>\ServiceConf::$aksk['ak'],"passwd"=>ServiceConf::$aksk['sk'] );
-
-global $log;
+$secret = array("user"=> ServiceConf::$aksk['ak'],"passwd"=>ServiceConf::$aksk['sk']);
 $log = BaeLog::getInstance($secret);
 $log->setLogLevel(ServiceConf::$log_cfg["level"]);
-$log->Notice("log ok!");
+
+function logger() {
+    global $log;
+    return $log;
+}

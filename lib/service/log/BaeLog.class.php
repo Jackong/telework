@@ -15,7 +15,7 @@
  *  
  **/
 
-require_once(dirname(__FILE__).'/netlog/NetLog.php');
+require_once(dirname(__FILE__) . '/netlog/NetLog.php');
 
 class BaeLog
 {
@@ -90,7 +90,13 @@ class BaeLog
         return self::$instance;
     }
 
-    
+    /*
+    *获取上次发送的错误码，非0为失败
+    */
+    public function getResultCode()
+    {
+        return $this->netLog->netlog_code();
+    }
     
     /**
      * @brief 打印一条致命错误日志

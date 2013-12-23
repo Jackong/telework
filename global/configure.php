@@ -1,6 +1,7 @@
 <?php
 class ServiceConf{
 
+    public static $app_id = 1959167;
 	/***Api Key and Secret Key***/
 	public static $aksk = array(
 			'ak' => 'GXTnHcjgvKPIl1MKbdxnmcQK',

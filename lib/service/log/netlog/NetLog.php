@@ -12,34 +12,52 @@ use Thrift\Exception\TException;
 
 
 define ('THRIFT_LIB_DIR', dirname(__FILE__).'/thriftlib');
-require_once THRIFT_LIB_DIR.'/Thrift.php';  
-require_once THRIFT_LIB_DIR.'/Thrift/Type/TType.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Type/TMessageType.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Factory/TStringFuncFactory.php';
-require_once THRIFT_LIB_DIR.'/Thrift/StringFunc/TStringFunc.php';
-require_once THRIFT_LIB_DIR.'/Thrift/StringFunc/Core.php';
-require_once THRIFT_LIB_DIR.'/protocol/TBinaryProtocol.php';  
-require_once THRIFT_LIB_DIR.'/protocol/TBinaryProtocolAccelerated.php';  
-require_once THRIFT_LIB_DIR.'/transport/TSocket.php';  
-require_once THRIFT_LIB_DIR.'/transport/THttpClient.php';  
-require_once THRIFT_LIB_DIR.'/transport/TBufferedTransport.php';  
-require_once THRIFT_LIB_DIR.'/transport/TFramedTransport.php';
-require_once THRIFT_LIB_DIR.'/transport/TMemoryBuffer.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Serializer/TBinarySerializer.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Exception/TException.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Exception/TProtocolException.php';
-require_once THRIFT_LIB_DIR.'/Thrift/Exception/TTransportException.php';
-require_once dirname(__FILE__).'/logchain/logchain.php';
-require_once dirname(__FILE__).'/logchain/Types.php';
+require_once THRIFT_LIB_DIR . '/Thrift.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Type/TType.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Type/TMessageType.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Factory/TStringFuncFactory.php';
+require_once THRIFT_LIB_DIR . '/Thrift/StringFunc/TStringFunc.php';
+require_once THRIFT_LIB_DIR . '/Thrift/StringFunc/Core.php';
+require_once THRIFT_LIB_DIR . '/protocol/TBinaryProtocol.php';
+require_once THRIFT_LIB_DIR . '/protocol/TBinaryProtocolAccelerated.php';
+require_once THRIFT_LIB_DIR . '/transport/TSocket.php';
+require_once THRIFT_LIB_DIR . '/transport/THttpClient.php';
+require_once THRIFT_LIB_DIR . '/transport/TBufferedTransport.php';
+require_once THRIFT_LIB_DIR . '/transport/TFramedTransport.php';
+require_once THRIFT_LIB_DIR . '/transport/TMemoryBuffer.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Serializer/TBinarySerializer.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Exception/TException.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Exception/TProtocolException.php';
+require_once THRIFT_LIB_DIR . '/Thrift/Exception/TTransportException.php';
+require_once dirname(__FILE__) . '/logchain/logchain.php';
+require_once dirname(__FILE__) . '/logchain/Types.php';
 
 class NetLog {
 
     public function __construct($secret)
     {
         $this->_secret = $secret;
-        $this->_host = BAE_ENV_LOG_HOST; 
-        $this->_port = BAE_ENV_LOG_PORT;
-        
+        $host = getenv('BAE_ENV_LOG_HOST');
+        if(!empty($host))
+        {
+            $this->_host = $host;
+        }else{
+            $this->_host = BAE_ENV_LOG_HOST;
+        }
+        $port = getenv('BAE_ENV_LOG_PORT');
+        if(!empty($port))
+        {
+            $this->_port = $port;
+        }else{
+            $this->_port = BAE_ENV_LOG_PORT;
+        }
+        $appid = getenv('BAE_ENV_APPID');
+        if(!empty($appid))
+        {
+            $this->_appid = $appid;
+        }else{
+            $this->_appid = BAE_ENV_APPID;
+        }        
     }
 
     public function __destruct()
@@ -66,7 +84,7 @@ class NetLog {
     
     public function netlog_send($level, $msg, $tag)
     {
-        $appid = BAE_ENV_APPID;
+        $appid = $this->_appid;
         try {
             $current_time = round(microtime(true) * 1000);
             $content = array('appid'=>$appid, 
@@ -94,10 +112,11 @@ class NetLog {
             $baeEntry = new logchain\BaeLog($baeLog);
             
             $result = $this->_client->log($baeEntry);
+            $this->_code = $result;
             if($result == logchain\BaeRet::OK)
             {
                 $this->msgArray = array();
-                return strlen($msg); 
+                return true; 
             }
 
             if(count($this->msgArray) >=256)
@@ -105,12 +124,20 @@ class NetLog {
                 $this->msgArray = array();
             }
             
-            return strlen($msg);           
+            return false;           
         } catch (TException $tx) {
             return false;
         }
     }
 
+    public function netlog_code()
+    {
+        $errorCode = $this->_code;
+        return $errorCode;
+    }
+    
+    private $_appid;
+    private $_code;
     private $_host;
     private $_port;
     private $_socket;

@@ -11,7 +11,7 @@ class Test extends Router {
     }
 
 	public function post() {
-        logger()->Debug("get param");
+        \Log::Trace("good");
         return Input::get("param");
 	}
 }

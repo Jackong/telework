@@ -12,7 +12,11 @@ use common\Formatter;
 
 class Json implements Formatter{
     public function output($content) {
-        echo json_encode($content);
+        if (is_array($content) || is_object($content)) {
+            echo json_encode($content);
+            return;
+        }
+        echo $content;
     }
 
 } 

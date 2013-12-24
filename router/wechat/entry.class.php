@@ -20,7 +20,7 @@ class Entry extends Router {
         $nonce = Input::get("nonce");
 
         \Log::Trace("$echostr, $signature, $timestamp, $nonce");
-        if (!$this->checkSign($signature, $timestamp, $nonce)) {
+        if ($this->checkSign($signature, $timestamp, $nonce)) {
             return $echostr;
         }
         return null;

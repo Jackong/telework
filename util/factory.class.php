@@ -9,6 +9,7 @@ namespace util;
 
 
 use common\formatter\Json;
+use common\formatter\Text;
 use common\formatter\Xml;
 use common\Formatter;
 
@@ -18,6 +19,9 @@ class Factory {
      * @return Formatter
      */
     public static function formatter($accept) {
+        if (false !== strpos("text/html", $accept)) {
+            return new Text();
+        }
         if (false !== strpos("application/xml", $accept)) {
             return new Xml();
         }

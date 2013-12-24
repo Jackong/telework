@@ -12,7 +12,7 @@ use router\Router;
 use util\Input;
 
 class Entry extends Router {
-    const TOKEN = "remote work";
+    const TOKEN = "RemoteWork";
     public function get() {
         $echostr = Input::get("echostr");
         $signature = Input::get("signature");

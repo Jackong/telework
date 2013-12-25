@@ -43,7 +43,7 @@ class Entry extends Router {
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             Log::Trace(json_encode($postObj));
-            $hndName = $postObj->MsgType;
+            $hndName = "\\service\\wechat\\telework\\" . ucfirst($postObj->MsgType);
             /**
              * @var $handler \service\wechat\Handler
              */

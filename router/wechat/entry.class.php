@@ -38,9 +38,11 @@ class Entry extends Router {
 
     public function post() {
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        Log::Trace($postStr);
         //extract post data
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            Log::Trace(json_encode($postObj));
             $hndName = $postObj->MsgType;
             /**
              * @var $handler \service\wechat\Handler

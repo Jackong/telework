@@ -11,7 +11,7 @@ namespace service\wechat\telework;
 use service\wechat\Handler;
 use util\Log;
 
-class Event implements Handler {
+class Event extends Handler {
     public function handle(\SimpleXMLElement $subject) {
         $toUserName = $subject->ToUserName;
         $fromUserName = $subject->FromUserName;

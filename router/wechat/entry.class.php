@@ -37,9 +37,6 @@ class Entry extends Router {
     }
 
     public function post() {
-        if (!$this->checkSign()) {
-            return null;
-        }
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         //extract post data
         if (!empty($postStr)){
@@ -49,6 +46,9 @@ class Entry extends Router {
              * @var $handler \service\wechat\Handler
              */
             $handler = new $hndName();
+            if ($handler->needCheck() && !$this->checkSign()) {
+                return null;
+            }
             return $handler->handle($postObj);
         }
         return null;

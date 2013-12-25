@@ -9,6 +9,10 @@ namespace service\wechat;
 
 
 
-interface Handler {
-    public function handle(\SimpleXMLElement $subject);
+abstract class Handler {
+    public abstract function handle(\SimpleXMLElement $subject);
+
+    public function needCheck() {
+        return false;
+    }
 } 

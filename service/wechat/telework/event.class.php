@@ -10,14 +10,35 @@ namespace service\wechat\telework;
 
 use service\wechat\Handler;
 use util\Log;
+use util\Mongo;
 
 class Event extends Handler {
     public function handle(\SimpleXMLElement $subject) {
-        $toUserName = $subject->ToUserName;
         $fromUserName = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $event = $subject->Event;
-        Log::Debug($fromUserName, $toUserName, $createTime, $event);
+        if (!function_exists($this->$event)) {
+            return null;
+        }
+        return $this->$event($fromUserName, $createTime);
     }
 
+    private function subscribe($userId, $createTime){
+        /**
+         * @var $collection \MongoCollection
+         */
+        $collection = Mongo::collection("subscribe");
+        $collection->insert(array("userId" => $userId, "createTime" => $createTime));
+        Log::Trace($userId, $createTime);
+        return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。");
+    }
+
+    private function unsubscribe($userId, $createTime){
+        /**
+         * @var $collection \MongoCollection
+         */
+        $collection = Mongo::collection("subscribe");
+        $collection->remove(array("userId" => $userId));
+        Log::Trace($userId, $createTime);
+    }
 } 

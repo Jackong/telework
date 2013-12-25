@@ -9,6 +9,7 @@ namespace router\wechat;
 
 
 use router\Router;
+use service\wechat\Handler;
 use util\Input;
 use util\Log;
 
@@ -42,6 +43,9 @@ class Entry extends Router {
         //extract post data
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            if (!isset($postObj->ToUserName) || $postObj->ToUserName != Handler::MYID) {
+                return null;
+            }
             $hndName = "\\service\\wechat\\telework\\" . ucfirst($postObj->MsgType);
             /**
              * @var $handler \service\wechat\Handler

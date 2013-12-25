@@ -28,29 +28,45 @@ class Log {
         fwrite(self::$file, "$level " . NOW . " - $msg\n");
     }
 
-    public static function Fatal($logmsg) {
-        self::log(1, $logmsg);
-        self::instance()->Fatal($logmsg);
+    private static function format($messages) {
+        $trace = debug_backtrace();
+        $trace = $trace[2];
+        $msgStr = "";
+        foreach ($messages as $message) {
+            $msgStr .= "|$message";
+        }
+
+        return "${trace['class']}>${trace['function']}$msgStr";
     }
 
-    public static function Warning($logmsg) {
-        self::log(2, $logmsg);
-        self::instance()->Warning($logmsg);
+    public static function Fatal() {
+        $msg = self::format(func_get_args());
+        self::log(1, $msg);
+        self::instance()->Fatal($msg);
     }
 
-    public static function Notice($logmsg) {
-        self::log(4, $logmsg);
-        self::instance()->Notice($logmsg);
+    public static function Warning() {
+        $msg = self::format(func_get_args());
+        self::log(2, $msg);
+        self::instance()->Warning($msg);
     }
 
-    public static function Trace($logmsg) {
-        self::log(8, $logmsg);
-        self::instance()->Trace($logmsg);
+    public static function Notice() {
+        $msg = self::format(func_get_args());
+        self::log(4, $msg);
+        self::instance()->Notice($msg);
     }
 
-    public static function Debug($logmsg) {
-        self::log(16, $logmsg);
-        self::instance()->Debug($logmsg);
+    public static function Trace() {
+        $msg = self::format(func_get_args());
+        self::log(8, $msg);
+        self::instance()->Trace($msg);
+    }
+
+    public static function Debug() {
+        $msg = self::format(func_get_args());
+        self::log(16, $msg);
+        self::instance()->Debug($msg);
     }
 
 }

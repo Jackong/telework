@@ -17,7 +17,7 @@ class Event extends Handler {
         $fromUserName = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $event = $subject->Event;
-        Log::Debug("$toUserName, $fromUserName, $createTime, $event");
+        Log::Debug($fromUserName, $toUserName, $createTime, $event);
     }
 
 } 

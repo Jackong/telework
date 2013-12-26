@@ -17,7 +17,7 @@ class Event extends Handler {
         $fromUserName = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $event = $subject->Event;
-        if (!function_exists($this->$event)) {
+        if (!method_exists($this, $event)) {
             return null;
         }
         return $this->$event($fromUserName, $createTime);

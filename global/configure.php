@@ -19,4 +19,7 @@ class ServiceConf{
 	);
 }
 
+class Wording {
+    public static $developing = "功能开发中，敬请期待。如有疑问:JackongC@gmail.com";
+}
 

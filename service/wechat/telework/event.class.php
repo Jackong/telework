@@ -30,7 +30,7 @@ class Event extends Handler {
         $collection = Mongo::collection("subscribe");
         $collection->update(array("userId" => $userId), array("createTime" => $createTime, "type" => "subscribe"));
         Log::Trace($userId, $createTime);
-        return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。");
+        return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。" . \Wording::$developing);
     }
 
     private function unsubscribe($userId, $createTime){
@@ -40,6 +40,6 @@ class Event extends Handler {
         $collection = Mongo::collection("subscribe");
         $collection->update(array("userId" => $userId), array("createTime" => $createTime, "type" => "unsubscribe"));
         Log::Trace($userId, $createTime);
-        return null;
+        return $this->text($userId, "为我们不周的服务感到的抱歉，希望你能给我们回馈一些意见，以便下次为您提供更优质的服务。" . \Wording::$developing);
     }
 } 

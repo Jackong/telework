@@ -28,7 +28,7 @@ class Event extends Handler {
          * @var $collection \MongoCollection
          */
         $collection = Mongo::collection("subscribe");
-        $collection->insert(array("userId" => $userId, "createTime" => $createTime));
+        $collection->update(array("userId" => $userId), array("createTime" => $createTime, "type" => "subscribe"));
         Log::Trace($userId, $createTime);
         return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。");
     }
@@ -38,7 +38,7 @@ class Event extends Handler {
          * @var $collection \MongoCollection
          */
         $collection = Mongo::collection("subscribe");
-        $collection->remove(array("userId" => $userId));
+        $collection->update(array("userId" => $userId), array("createTime" => $createTime, "type" => "unsubscribe"));
         Log::Trace($userId, $createTime);
         return null;
     }

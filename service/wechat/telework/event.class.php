@@ -16,7 +16,7 @@ class Event extends Handler {
     public function handle(\SimpleXMLElement $subject) {
         $fromUserName = $subject->FromUserName;
         $createTime = $subject->CreateTime;
-        $event = $subject->Event;
+        $event = (string)$subject->Event;
         if (!method_exists($this, $event)) {
             return null;
         }
@@ -40,5 +40,6 @@ class Event extends Handler {
         $collection = Mongo::collection("subscribe");
         $collection->remove(array("userId" => $userId));
         Log::Trace($userId, $createTime);
+        return null;
     }
 } 

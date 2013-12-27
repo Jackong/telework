@@ -28,6 +28,10 @@ class Mongo {
         return self::$db;
     }
 
+    /**
+     * @param $name
+     * @return \MongoCollection
+     */
     public static function collection($name) {
         return self::instance()->selectCollection($name);
     }

@@ -79,10 +79,15 @@ class Handler implements \service\crawler\Handler {
 </head>
 <body>
 %s
+<br>
+发布时间：%s
+<br>
+<a href='%s'>原文</a>
 </body>
 </html>";
         foreach ($jobs as $id => $job) {
-            if (false == file_put_contents(PROJECT . "/static/job.html", sprintf($tpl, $job["title"], $job["content"]))) {
+            if (false == file_put_contents(PROJECT . "/static/job.html",
+                    sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]))) {
                 \cron\Log::Warning($category, $id, "can not put content to file");
                 continue;
             }

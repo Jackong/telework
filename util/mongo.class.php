@@ -16,9 +16,10 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $dbname = \ServiceConf::$mongo_cfg['dbname'];
-        $host = \ServiceConf::$mongo_cfg['host'];
-        $port = \ServiceConf::$mongo_cfg['port'];
+        $config = \ServiceConf::$mongo_cfg[$name];
+        $dbname = $config['dbname'];
+        $host = $config['host'];
+        $port = $config['port'];
         $user = \ServiceConf::$aksk['ak'];
         $pwd = \ServiceConf::$aksk['sk'];
 

@@ -23,7 +23,7 @@ class Text extends Handler {
 
     private function registerHunter($userId, $createTime, $content) {
         $hunter = Mongo::collection("hunter");
-        $hunter->update(array("id" => $userId), array("createTime" => $createTime, "content" => $content));
+        $hunter->update(array("id" => $userId), array("createTime" => $createTime, "content" => $content), array("upsert" => true));
     }
 
     private function huntJob($userId, $content){

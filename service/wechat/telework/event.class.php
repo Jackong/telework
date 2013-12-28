@@ -27,7 +27,21 @@ class Event extends Handler {
         $collection = Mongo::user("subscribe");
         $collection->update(array("id" => $userId), array("createTime" => $createTime, "type" => "subscribe"), array("upsert" => true));
         Log::Trace($userId, $createTime);
-        return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。" . \Wording::$developing);
+        $categories = "";
+        foreach (\_37Signals::$categories as $category => $info) {
+            if (isset($info["support"]) && !$info["support"]) {
+                continue;
+            }
+            $categories .= $category . "：" . $info["lang"][1] . "\n";
+        }
+
+        return $this->text(
+            $userId,
+            "欢迎关注，远程工作为您服务。请选择你的职业领域并回复相应数字及职位：\n职业领域："
+            . $categories
+            . "\n如：想找编程领域的php职位，则回复\"2:php\"\n"
+            . "将为你第一时间呈送。"
+        );
     }
 
     private function unsubscribe($userId, $createTime){

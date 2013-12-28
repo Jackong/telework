@@ -75,7 +75,7 @@ class Text extends Handler {
         $items = array();
         foreach ($cursor as $doc) {
             $item["title"] = $doc["title"];
-            $item["description"] = "发布时间：" . date("Y-m-d H:i", $doc["pubTime"]);
+            $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
             $item["url"] = $doc["link"];
             $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
             $items[] = $item;

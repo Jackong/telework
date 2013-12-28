@@ -72,10 +72,6 @@ class Text extends Handler {
             )
         );
 
-        if (empty($cursor)) {
-            Log::Debug($userId, "can not found any job", $category, $job);
-            return $this->text($userId, "非常抱歉，暂时没有关于<$job>的招聘，稍后若有相关招聘，我们将第一时间为您送达，祝一切顺利。");
-        }
         $items = array();
         foreach ($cursor as $doc) {
             $item["title"] = $doc["title"];
@@ -86,6 +82,10 @@ class Text extends Handler {
             if (count($items) >= 10) {
                 break;
             }
+        }
+        if (empty($items)) {
+            Log::Debug($userId, "can not found any job", $category, $job);
+            return $this->text($userId, "非常抱歉，暂时没有关于<$job>的招聘，稍后若有相关招聘，我们将第一时间为您送达，祝一切顺利。");
         }
         Log::Trace($userId, "found jobs", $category, $job, count($items));
         return $this->news($userId, $items);

@@ -8,6 +8,7 @@
 namespace service\wechat\telework;
 
 
+use glob\config\source\_37Signals;
 use service\wechat\Handler;
 use util\Mongo;
 
@@ -16,29 +17,71 @@ class Text extends Handler {
         $userId = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $content = $subject->Content;
-        if (!$this->checkJob($content)) {
+        $category2Job = $this->getCategoryAndJob($content);
+        if (!$category2Job) {
             return $this->text($userId, "你回复的格式有误，请确认其正确性。" . \glob\config\Job::huntJobText());
         }
-        $this->registerHunter($userId, $createTime, $content);
-        return $this->huntJob($userId, $content);
+        $this->registerHunter($userId, $createTime, $category2Job[0], $category2Job[1]);
+        return $this->huntJob($userId, $category2Job[0], $category2Job[1]);
     }
 
-    private function checkJob($content) {
-        str_replace("：", ":", $content);
+    private function getCategoryAndJob(&$content) {
+        $content = str_replace("：", ":", $content);
         $request = explode(":", $content);
         if (count($request) < 2) {
             return false;
         }
-        $category = $request[0];
-        $job = $request[1];
+        if (!isset(_37Signals::$categories[$request[0]])) {
+            return false;
+        }
+        if (mb_strlen($request[1]) > 15) {
+            return false;
+        }
+        return $request;
     }
 
-    private function registerHunter($userId, $createTime, $content) {
+    private function registerHunter($userId, $createTime, $category, $job) {
         $hunter = Mongo::user("hunter");
-        $hunter->update(array("id" => $userId), array("createTime" => $createTime, "content" => $content), array("upsert" => true));
+        $hunter->update(
+            array("id" => $userId),
+            array(
+                "id" => $userId,
+                "createTime" => $createTime,
+                "category" => $category,
+                "job" => $job
+            ),
+            array("upsert" => true)
+        );
     }
 
-    private function huntJob($userId, $content){
-        return $this->text($userId, "非常抱歉，暂时没有关于<$content>的招聘，以后若有相关招聘，我们将第一时间通知你，祝一切顺利。");
+    private function huntJob($userId, $category, $job) {
+        $jobs = Mongo::job("jobs");
+        $condition = "function(){
+                    return this.title.indexOf('$job') > 0;
+                }";
+        $cursor = $jobs->find(
+            array(
+                "category" => $category,
+                '$where' => $condition,
+            ),
+            array(
+                "title" => true,
+                "description" => true,
+                "pubTime" => true,
+                "link" => true,
+            )
+        );
+
+        if (empty($cursor)) {
+            return $this->text($userId, "非常抱歉，暂时没有关于<$job>的招聘，稍后若有相关招聘，我们将第一时间为您送达，祝一切顺利。");
+        }
+        $items = array();
+        foreach ($cursor as $doc) {
+            $item["title"] = $doc["title"];
+            $item["description"] = date("Y-m-d H:i", $doc["pubTime"]) . ":" . substr($doc["description"], 0, 25);
+            $item["link"] = $doc["link"];
+            $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
+        }
+        return $this->news($userId, $items);
     }
 } 

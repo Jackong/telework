@@ -28,4 +28,29 @@ abstract class Handler {
                 </xml>";
         return sprintf($tpl, $userId, self::MYID, TIME, $content);
     }
+
+    protected function news($userId, $items) {
+        $tpl = "<xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>%s</ArticleCount>
+                    <Articles>
+                    %s
+                    </Articles>
+                </xml>";
+        $articles = "";
+        $itemTpl = "<item>
+                        <Title><![CDATA[%s]]></Title>
+                        <Description><![CDATA[%s]]></Description>
+                        <PicUrl><![CDATA[%s]]></PicUrl>
+                        <Url><![CDATA[%s]]></Url>
+                    </item>";
+        foreach ($items as $item) {
+            $articles .= sprintf($itemTpl, $item["title"], $item["description"], $item["picUrl"], $item["url"]);
+        }
+
+        return sprintf($tpl, $userId, self::MYID, TIME, count($items), $articles);
+    }
 } 

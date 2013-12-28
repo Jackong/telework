@@ -30,6 +30,7 @@ class Handler implements \service\crawler\Handler {
             $jobs->update(
                 array("guid" => (string) $item->guid),
                 array(
+                    "guid" => (string) $item->guid,
                     "category" => $category,
                     "title" => (string) $item->title,
                     "description" => (string) $item->description,

@@ -22,8 +22,8 @@ class Mongo {
         $dbname = $config['dbname'];
         $host = $config['host'];
         $port = $config['port'];
-        $user = Service::$aksk['ak'];
-        $pwd = Service::$aksk['sk'];
+        $user = Service::$ak;
+        $pwd = Service::$sk;
 
         $mongoClient = new \MongoClient("mongodb://{$host}:{$port}");
         $db = $mongoClient->selectDB($dbname);

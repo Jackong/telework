@@ -6,10 +6,9 @@ class Service{
 
     public static $app_id = 1959167;
 	/***Api Key and Secret Key***/
-	public static $aksk = array(
-			'ak' => 'GXTnHcjgvKPIl1MKbdxnmcQK',
-			'sk' => '2RGpR7kuue9wCQX4oFHL8hXYnE2zpsg4',
-	);
+    public static $ak = 'GXTnHcjgvKPIl1MKbdxnmcQK';
+    public static $sk = '2RGpR7kuue9wCQX4oFHL8hXYnE2zpsg4';
+
 	/***Mongo数据库配置***/
 	public static $mongo_cfg = array(
         "user" => array(

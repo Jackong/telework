@@ -44,7 +44,6 @@ class Entry extends Router {
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             if (!isset($postObj->ToUserName) || $postObj->ToUserName != Handler::MYID) {
-                Log::Debug("check my id error");
                 return null;
             }
             $hndName = "\\service\\wechat\\telework\\" . ucfirst($postObj->MsgType);
@@ -53,7 +52,6 @@ class Entry extends Router {
              */
             $handler = new $hndName();
             if ($handler->needCheck() && !$this->checkSign()) {
-                Log::Debug("check sign error");
                 return null;
             }
             return $handler->handle($postObj);

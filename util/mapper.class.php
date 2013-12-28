@@ -11,7 +11,6 @@ use common\Exception;
 
 class Mapper {
     public static function handle($url, $method) {
-        Log::Debug($url, $method);
         try {
             list($path) = explode("?", $url);
             list(, $routerDir, $routerName) = explode("/", $path);

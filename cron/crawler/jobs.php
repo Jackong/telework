@@ -45,6 +45,10 @@ class Handler implements \service\crawler\Handler {
         \cron\Log::Trace($category, "the number of items are collected actually", $actual);
     }
 
+    private function upload2Bcs($category, $guid, $decription) {
+
+    }
+
     private function checkTitle($title, $enInfo) {
         \cron\Log::Trace($enInfo, $title);
         if (strpos($title, $enInfo) === false) {

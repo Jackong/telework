@@ -70,7 +70,7 @@ class Text extends Handler {
                 "pubTime" => true,
                 "id" => true,
             )
-        );
+        )->sort(array("pubTime" => -1));
 
         $items = array();
         foreach ($cursor as $doc) {

@@ -8,6 +8,8 @@
 namespace util;
 
 
+use glob\Service;
+
 class Mongo {
 
     private static $dbs = array();
@@ -16,12 +18,12 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $config = \Service::$mongo_cfg[$name];
+        $config = Service::$mongo_cfg[$name];
         $dbname = $config['dbname'];
         $host = $config['host'];
         $port = $config['port'];
-        $user = \Service::$aksk['ak'];
-        $pwd = \Service::$aksk['sk'];
+        $user = Service::$aksk['ak'];
+        $pwd = Service::$aksk['sk'];
 
         $mongoClient = new \MongoClient("mongodb://{$host}:{$port}");
         $db = $mongoClient->selectDB($dbname);

@@ -6,6 +6,8 @@
  */
 
 namespace util;
+use glob\Service;
+
 require_once PROJECT . "/lib/service/log/BaeLog.class.php";
 
 class Log {
@@ -14,9 +16,9 @@ class Log {
 
     private static function instance() {
         if (!isset(self::$baeLog)) {
-            $secret = array("user"=> \Service::$aksk['ak'],"passwd"=> \Service::$aksk['sk']);
+            $secret = array("user"=> Service::$aksk['ak'],"passwd"=> Service::$aksk['sk']);
             self::$baeLog = \BaeLog::getInstance($secret);
-            self::$baeLog->setLogLevel(\Service::$log_cfg["level"]);
+            self::$baeLog->setLogLevel(Service::$log_cfg["level"]);
         }
         return self::$baeLog;
     }

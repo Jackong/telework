@@ -9,9 +9,16 @@ class ServiceConf{
 	);
 	/***Mongo数据库配置***/
 	public static $mongo_cfg = array(
+        "user" => array(
 			'dbname' => 'RGFauSekXKrYgGCstaDB',
 			'host' => 'mongo.duapp.com',
-			'port' => '8908',		
+			'port' => '8908',
+        ),
+        "job" => array(
+            "dbname" => "XcdWGBMKMFLUcjNuLMzI",
+            'host' => 'mongo.duapp.com',
+            'port' => '8908',
+        ),
 	);
 	/***Log(日志服务)配置***/
 	public static $log_cfg = array(

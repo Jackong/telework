@@ -24,14 +24,14 @@ class Event extends Handler {
     }
 
     private function subscribe($userId, $createTime){
-        $collection = Mongo::collection("subscribe");
+        $collection = Mongo::user("subscribe");
         $collection->update(array("id" => $userId), array("createTime" => $createTime, "type" => "subscribe"), array("upsert" => true));
         Log::Trace($userId, $createTime);
         return $this->text($userId, "欢迎关注，远程工作为您服务，请回复你要订阅的职位，将为你第一时间呈送。" . \Wording::$developing);
     }
 
     private function unsubscribe($userId, $createTime){
-        $collection = Mongo::collection("subscribe");
+        $collection = Mongo::user("subscribe");
         $collection->update(array("id" => $userId), array("createTime" => $createTime, "type" => "unsubscribe"), array("upsert" => true));
         Log::Trace($userId, $createTime);
         return null;

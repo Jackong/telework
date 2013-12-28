@@ -20,7 +20,7 @@ class Handler implements \service\crawler\Handler {
 
     private function collect($category, $items) {
         \cron\Log::Trace($category, "the number of items will be collected", count($items));
-        $jobs = \util\Mongo::collection("jobs");
+        $jobs = \util\Mongo::job("jobs");
         $actual = 0;
         foreach ($items as $item) {
             if (!isset($item->guid) || !isset($item->title) || !isset($item->description)) {

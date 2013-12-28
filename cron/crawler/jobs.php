@@ -34,7 +34,8 @@ class Handler implements \service\crawler\Handler {
                     "title" => (string) $item->title,
                     "description" => (string) $item->description,
                     "link" => (string) $item->link,
-                    "time" => (string) $item->pubDate,
+                    "pubTime" => strtotime((string) $item->pubDate),
+                    "time" => TIME,
                 ),
                 array("upsert" => true)
             );

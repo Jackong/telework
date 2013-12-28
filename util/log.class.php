@@ -14,9 +14,9 @@ class Log {
 
     private static function instance() {
         if (!isset(self::$baeLog)) {
-            $secret = array("user"=> \ServiceConf::$aksk['ak'],"passwd"=> \ServiceConf::$aksk['sk']);
+            $secret = array("user"=> \Service::$aksk['ak'],"passwd"=> \Service::$aksk['sk']);
             self::$baeLog = \BaeLog::getInstance($secret);
-            self::$baeLog->setLogLevel(\ServiceConf::$log_cfg["level"]);
+            self::$baeLog->setLogLevel(\Service::$log_cfg["level"]);
         }
         return self::$baeLog;
     }

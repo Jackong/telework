@@ -1,7 +1,6 @@
 <?php
 define("PROJECT", __DIR__);
-require_once "global/configure.php";
-require_once "global/time.php";
+require_once "glob/time.php";
 
 function loader($className) {
 	$file = strtolower(str_replace("\\", "/", $className));	

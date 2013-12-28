@@ -1,11 +1,11 @@
 
 <?php
 /*连接数据库所需要的五要素（可从数据库详情页中查到相应信息）*/
-$dbname = ServiceConf::$mongo_cfg['dbname'];;
-$host = ServiceConf::$mongo_cfg['host'];
-$port = ServiceConf::$mongo_cfg['port'];;
-$user = ServiceConf::$aksk['ak'];;
-$pwd = ServiceConf::$aksk['sk'];;
+$dbname = Service::$mongo_cfg['dbname'];;
+$host = Service::$mongo_cfg['host'];
+$port = Service::$mongo_cfg['port'];;
+$user = Service::$aksk['ak'];;
+$pwd = Service::$aksk['sk'];;
 
 try {
 	/*建立连接后，在进行集合操作前，需要先select使用的数据库，并进行auth*/

@@ -4,6 +4,7 @@
  * Date: 13-12-28
  * Time: 上午9:50
  */
+namespace glob\config\source;
 
 class _37Signals {
     public static $host = "https://weworkremotely.com";

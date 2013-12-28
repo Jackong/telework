@@ -16,12 +16,12 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $config = \ServiceConf::$mongo_cfg[$name];
+        $config = \Service::$mongo_cfg[$name];
         $dbname = $config['dbname'];
         $host = $config['host'];
         $port = $config['port'];
-        $user = \ServiceConf::$aksk['ak'];
-        $pwd = \ServiceConf::$aksk['sk'];
+        $user = \Service::$aksk['ak'];
+        $pwd = \Service::$aksk['sk'];
 
         $mongoClient = new \MongoClient("mongodb://{$host}:{$port}");
         $db = $mongoClient->selectDB($dbname);

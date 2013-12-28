@@ -9,7 +9,7 @@ require_once __DIR__ . "/../../bootstrap.php";
 
 class Handler implements \service\crawler\Handler {
     public function handle($data, $category) {
-        $info = _37Signals::$categories[$category]["lang"];
+        $info = \glob\config\source\_37Signals::$categories[$category]["lang"];
         $jobsXml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
         $channel = $jobsXml->channel;
         if (!$this->checkTitle($channel->title, $info[0])) {
@@ -56,7 +56,7 @@ class Handler implements \service\crawler\Handler {
 
 $crawler = new \service\crawler\Crawler(new Handler());
 
-foreach (_37Signals::$categories as $category => $_) {
-    $crawler->crawl(_37Signals::$host . "/categories/$category/jobs.rss", $category);
+foreach (\glob\config\source\_37Signals::$categories as $category => $_) {
+    $crawler->crawl(\glob\config\source\_37Signals::$host . "/categories/$category/jobs.rss", $category);
 }
 

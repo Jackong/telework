@@ -9,7 +9,6 @@ namespace service\wechat\telework;
 
 
 use service\wechat\Handler;
-use util\Log;
 use util\Mongo;
 
 class Text extends Handler {
@@ -17,8 +16,21 @@ class Text extends Handler {
         $userId = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $content = $subject->Content;
+        if (!$this->checkJob($content)) {
+            return $this->text($userId, "你回复的格式有误，请确认其正确性。" . \glob\config\Job::huntJobText());
+        }
         $this->registerHunter($userId, $createTime, $content);
         return $this->huntJob($userId, $content);
+    }
+
+    private function checkJob($content) {
+        str_replace("：", ":", $content);
+        $request = explode(":", $content);
+        if (count($request) < 2) {
+            return false;
+        }
+        $category = $request[0];
+        $job = $request[1];
     }
 
     private function registerHunter($userId, $createTime, $content) {

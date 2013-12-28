@@ -1,5 +1,8 @@
 <?php
-class ServiceConf{
+
+namespace glob;
+
+class Service{
 
     public static $app_id = 1959167;
 	/***Api Key and Secret Key***/
@@ -29,5 +32,3 @@ class ServiceConf{
 class Wording {
     public static $developing = "功能开发中，敬请期待。如有疑问:JackongC@gmail.com";
 }
-
-require_once "config/source/37signals.php";

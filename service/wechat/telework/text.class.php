@@ -61,7 +61,7 @@ class Text extends Handler {
         $jobs = Mongo::job("jobs");
         $cursor = $jobs->find(
             array(
-                "category" => new \MongoInt32($category),
+                "category" => $category,
                 '$where' => "function(){return this.title.indexOf('$job') > 0;}"
             ),
             array(
@@ -79,8 +79,8 @@ class Text extends Handler {
         $items = array();
         foreach ($cursor as $doc) {
             $item["title"] = $doc["title"];
-            $item["description"] = date("Y-m-d H:i", $doc["pubTime"]) . ":" . substr($doc["description"], 0, 25);
-            $item["link"] = $doc["link"];
+            $item["description"] = "发布时间：" . date("Y-m-d H:i", $doc["pubTime"]);
+            $item["url"] = $doc["link"];
             $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
             $items[] = $item;
             if (count($items) >= 10) {

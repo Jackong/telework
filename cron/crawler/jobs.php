@@ -76,6 +76,10 @@ class Handler implements \service\crawler\Handler {
 <html>
 <head>
     <title>%s</title>
+    <meta name=\"description\" content=\"Remote Jobs\">
+    <meta name=\"keywords\" content=\"Remote,Remotely,Work,Job\">
+    <meta name=\"author\" content=\"Jackong Change\">
+    <meta charset=\"UTF-8\">
 </head>
 <body>
 %s

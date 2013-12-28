@@ -20,8 +20,8 @@ class Text extends Handler {
         $content = $subject->Content;
         $category2Job = $this->getCategoryAndJob($content);
         if (!$category2Job) {
-            Log::Debug($userId, "wrong request job format");
-            return $this->text($userId, "你回复的格式有误，请确认其正确性。" . \glob\config\Job::huntJobText());
+            Log::Notice($userId, "feedback", $content);
+            return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\config\Job::huntJobText());
         }
         $this->registerHunter($userId, $createTime, $category2Job[0], $category2Job[1]);
         return $this->huntJob($userId, $category2Job[0], $category2Job[1]);

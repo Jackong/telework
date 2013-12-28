@@ -68,7 +68,7 @@ class Text extends Handler {
                 "title" => true,
                 "description" => true,
                 "pubTime" => true,
-                "link" => true,
+                "id" => true,
             )
         );
 
@@ -76,7 +76,7 @@ class Text extends Handler {
         foreach ($cursor as $doc) {
             $item["title"] = $doc["title"];
             $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
-            $item["url"] = $doc["link"];
+            $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
             $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
             $items[] = $item;
             if (count($items) >= 10) {

@@ -16,6 +16,8 @@ class Syntax extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("xxoo kk", $c[0]);
     }
 
+
+
     public function testPregMatch() {
         $data = '
 
@@ -70,8 +72,27 @@ Highly competitive, self-starter with good team skills
 <p><strong>To apply:</strong> <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%63%61%72%65%65%72%73@%63%6f%75%6e%74%65%72%73%6f%66%74.%63%6f%6d">careers@countersoft.com</a></p>
 ';
         if (preg_match("/<div>(.+?)<\\/div>/", $data, $matches)) {
-            echo $matches[1];
+            echo $matches[1] . "\n";
         }
+    }
+
+    public function testHtml2Text()
+    {
+        $content = "The Voalte Engineering team is looking for an experienced and motivated iOS Application developer with a desire to create world-class mobile applications for the healthcare market.&nbsp; Voalte is redefining communication to improve patient care and increase caregiver productivity using the latest mobile devices such as the iPhone, iPod Touch and iPad.";
+        echo $content . "\n";
+        $c = $this->getplaintextintrofromhtml($content);
+        echo $c . "\n";
+    }
+
+    private function getplaintextintrofromhtml($html) {
+
+        // Remove the HTML tags
+        //$html = strip_tags($html);
+
+        // Convert HTML entities to single characters
+        $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+
+        return $html;
     }
 
 

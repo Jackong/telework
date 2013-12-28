@@ -40,7 +40,7 @@ class Handler implements \service\crawler\Handler {
                     "id" => $id,
                     "category" => $category,
                     "title" => $title,
-                    "description" => $description,
+                    "description" => html_entity_decode($description, ENT_QUOTES, 'UTF-8'),
                     "link" => $link,
                     "pubTime" => $pubTime,
                     "time" => TIME,
@@ -72,8 +72,17 @@ class Handler implements \service\crawler\Handler {
         $opt ['curlopts'] = array (
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT => 1800 );
+        $tpl = "<!DOCTYPE html>
+<html>
+<head>
+    <title>%s</title>
+</head>
+<body>
+%s
+</body>
+</html>";
         foreach ($jobs as $id => $job) {
-            if (false == file_put_contents(PROJECT . "/static/job.html", $job["content"])) {
+            if (false == file_put_contents(PROJECT . "/static/job.html", sprintf($tpl, $job["title"], $job["content"]))) {
                 \cron\Log::Warning($category, $id, "can not put content to file");
                 continue;
             }

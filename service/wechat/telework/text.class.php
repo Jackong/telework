@@ -61,7 +61,7 @@ class Text extends Handler {
         $jobs = Mongo::job("jobs");
         $cursor = $jobs->find(
             array(
-                "category" => $category,
+                "category" => new \MongoInt32($category),
                 '$where' => "function(){return this.title.indexOf('$job') > 0;}"
             ),
             array(

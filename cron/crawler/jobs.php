@@ -90,15 +90,10 @@ class Handler implements \service\crawler\Handler {
 </body>
 </html>";
         foreach ($jobs as $id => $job) {
-            if (false == file_put_contents(PROJECT . "/static/job.html",
-                    sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]))) {
-                \cron\Log::Warning($category, $id, "can not put content to file");
-                continue;
-            }
-            $response = $bcs->create_object(
+            $response = $bcs->create_object_by_content(
                 "telework-jobs",
                 "/$id.html",
-                PROJECT . "/static/job.html",
+                sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]),
                 $opt
             );
             if (!$response->isOK()) {

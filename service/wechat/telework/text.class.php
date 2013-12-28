@@ -91,9 +91,4 @@ class Text extends Handler {
         return $this->news($userId, $items);
     }
 
-    public function needCheck() {
-        return true;
-    }
-
-
 } 

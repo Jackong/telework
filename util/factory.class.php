@@ -19,6 +19,7 @@ class Factory {
      * @return Formatter
      */
     public static function formatter($accept) {
+        Log::Debug($accept);
         if (false !== strpos("text/html", $accept)) {
             return new Text();
         }

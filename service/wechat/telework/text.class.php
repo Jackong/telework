@@ -59,13 +59,10 @@ class Text extends Handler {
 
     private function huntJob($userId, $category, $job) {
         $jobs = Mongo::job("jobs");
-        $condition = "function(){
-                    return this.title.indexOf('$job') > 0;
-                }";
         $cursor = $jobs->find(
             array(
-                "category" => $category,
-                '$where' => $condition,
+                "category" => new \MongoInt32($category),
+                '$where' => "function(){return this.title.indexOf('$job') > 0;}"
             ),
             array(
                 "title" => true,
@@ -86,6 +83,9 @@ class Text extends Handler {
             $item["link"] = $doc["link"];
             $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
             $items[] = $item;
+            if (count($items) >= 10) {
+                break;
+            }
         }
         Log::Trace($userId, "found jobs", $category, $job, count($items));
         return $this->news($userId, $items);

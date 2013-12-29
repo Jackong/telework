@@ -18,8 +18,8 @@ class Text extends Handler {
         $userId = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $content = $subject->Content;
-        $category = $this->getCategory($content);
-        if (!$category) {
+        $category = $this->getCategory(trim($content));
+        if (0 == $category) {
             Log::Notice($userId, "feedback", $content);
             return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\config\Job::huntJobText());
         }
@@ -29,11 +29,11 @@ class Text extends Handler {
 
     private function getCategory($content) {
         if (!is_numeric($content)) {
-            return false;
+            return 0;
         }
         $category = intval($content);
         if (!isset(_37Signals::$categories[$category])) {
-            return false;
+            return 0;
         }
         return $category;
     }

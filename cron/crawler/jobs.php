@@ -90,10 +90,12 @@ class Handler implements \service\crawler\Handler {
 </body>
 </html>";
         foreach ($jobs as $id => $job) {
-            $response = $bcs->create_object_by_content(
+            $file = PROJECT . "/static/job.html";
+            file_put_contents($file, sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]));
+            $response = $bcs->create_object(
                 "telework-jobs",
                 "/$id.html",
-                sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]),
+                $file,
                 $opt
             );
             if (!$response->isOK()) {

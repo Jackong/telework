@@ -18,31 +18,27 @@ class Text extends Handler {
         $userId = $subject->FromUserName;
         $createTime = $subject->CreateTime;
         $content = $subject->Content;
-        $category2Job = $this->getCategoryAndJob($content);
-        if (!$category2Job) {
+        $category = $this->getCategory($content);
+        if (!$category) {
             Log::Notice($userId, "feedback", $content);
             return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\config\Job::huntJobText());
         }
-        $this->registerHunter($userId, $createTime, $category2Job[0], $category2Job[1]);
-        return $this->huntJob($userId, $category2Job[0], $category2Job[1]);
+        $this->registerHunter($userId, $createTime, $category);
+        return $this->huntJob($userId, $category);
     }
 
-    private function getCategoryAndJob(&$content) {
-        $content = str_replace("：", ":", $content);
-        $request = explode(":", $content);
-        if (count($request) < 2) {
+    private function getCategory($content) {
+        if (!is_numeric($content)) {
             return false;
         }
-        if (!isset(_37Signals::$categories[$request[0]])) {
+        $category = intval($content);
+        if (!isset(_37Signals::$categories[$category])) {
             return false;
         }
-        if (mb_strlen($request[1]) > 15) {
-            return false;
-        }
-        return $request;
+        return $category;
     }
 
-    private function registerHunter($userId, $createTime, $category, $job) {
+    private function registerHunter($userId, $createTime, $category) {
         $hunter = Mongo::user("hunter");
         $hunter->update(
             array("id" => $userId),
@@ -50,19 +46,17 @@ class Text extends Handler {
                 "id" => $userId,
                 "createTime" => $createTime,
                 "category" => $category,
-                "job" => $job
             ),
             array("upsert" => true)
         );
-        Log::Trace($userId, "register hunter for", $category, $job);
+        Log::Trace($userId, "register hunter for", $category);
     }
 
-    private function huntJob($userId, $category, $job) {
+    private function huntJob($userId, $category) {
         $jobs = Mongo::job("jobs");
         $cursor = $jobs->find(
             array(
                 "category" => new \MongoInt32($category),
-                '$where' => "function(){return this.title.indexOf('$job') > 0;}"
             ),
             array(
                 "title" => true,
@@ -84,10 +78,11 @@ class Text extends Handler {
             }
         }
         if (empty($items)) {
-            Log::Debug($userId, "can not found any job", $category, $job);
+            Log::Debug($userId, "can not found any job", $category);
+            $job = _37Signals::$categories[$category]["lang"][1];
             return $this->text($userId, "非常抱歉，暂时没有关于<$job>的招聘，稍后若有相关招聘，我们将第一时间为您送达，祝一切顺利。");
         }
-        Log::Trace($userId, "found jobs", $category, $job, count($items));
+        Log::Trace($userId, "found jobs", $category, count($items));
         return $this->news($userId, $items);
     }
 

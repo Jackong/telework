@@ -19,7 +19,7 @@ class Test extends Router {
         $response = $bcs->create_object(
             "telework-jobs",
             "/test.jpeg",
-            PROJECT . "/static/default.jpeg",
+            PROJECT . "/static/remote0.jpeg",
             $opt
         );
         return $response->isOK();

@@ -68,12 +68,13 @@ class Text extends Handler {
 
         $items = array();
         foreach ($cursor as $doc) {
+            $count = count($items);
             $item["title"] = $doc["title"];
             $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
             $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
-            $item["picUrl"] = "http://telework.duapp.com/static/default.jpeg";
+            $item["picUrl"] = "http://telework.duapp.com/static/remote$count.jpeg";
             $items[] = $item;
-            if (count($items) >= 10) {
+            if ($count >= 9) {
                 break;
             }
         }

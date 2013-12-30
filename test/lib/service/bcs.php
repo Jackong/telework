@@ -21,7 +21,7 @@ class BcsTest extends \PHPUnit_Framework_TestCase {
         $response = $bcs->create_object(
             "telework-jobs",
             "/test.jpeg",
-            PROJECT . "/static/default.jpeg",
+            PROJECT . "/static/remote0.jpeg",
             $opt
         );
         var_export($response);

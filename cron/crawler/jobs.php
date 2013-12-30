@@ -19,7 +19,7 @@ class Handler implements \service\crawler\Handler {
     }
 
     private function collect($category, $items) {
-        \cron\Log::Trace($category, "the number of items will be collected", count($items));
+        \cron\Log::Trace($category, "the number of items are found", count($items));
         $jobs = \util\Mongo::job("jobs");
         $jobList = array();
         foreach ($items as $item) {
@@ -34,8 +34,10 @@ class Handler implements \service\crawler\Handler {
             $pubTime = strtotime((string) $item->pubDate);
             $description = $this->getDescription($content);
             $id = md5($guid);
-            $jobs->update(
-                array("id" => $id,),
+            if (!is_null($jobs->findOne(array("id" => $id)))) {
+                continue;
+            }
+            $jobs->insert(
                 array(
                     "id" => $id,
                     "category" => $category,
@@ -44,8 +46,7 @@ class Handler implements \service\crawler\Handler {
                     "link" => $link,
                     "pubTime" => $pubTime,
                     "time" => TIME,
-                ),
-                array("upsert" => true)
+                )
             );
             $jobList[$id] = array(
                 "title" => $title,
@@ -55,7 +56,7 @@ class Handler implements \service\crawler\Handler {
             );
         }
         $this->upload2Bcs($category, $jobList);
-        \cron\Log::Trace($category, "the number of items are collected actually", count($jobList));
+        \cron\Log::Trace($category, "the number of items are collected", count($jobList));
     }
 
     private function getDescription($content) {

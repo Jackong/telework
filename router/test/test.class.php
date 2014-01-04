@@ -27,6 +27,14 @@ class Test extends Router {
 
 	public function post() {
         Log::Notice("test post");
-        return Input::get("param");
+        $param = Input::get("param");
+        return array(
+            "test",
+            array(
+                "title" => "php tpl",
+                "param" => $param,
+                "ext" => "test tpl"
+            )
+        );
 	}
 }

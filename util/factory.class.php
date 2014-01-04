@@ -19,10 +19,10 @@ class Factory {
      * @return Formatter
      */
     public static function formatter($accept) {
-        if (false !== strpos("text/html", $accept)) {
+        if (false !== strpos($accept, "text/html")) {
             return new Text();
         }
-        if (false !== strpos("application/xml", $accept)) {
+        if (false !== strpos($accept, "application/xml")) {
             return new Xml();
         }
         return new Json();

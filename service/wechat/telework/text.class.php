@@ -72,7 +72,7 @@ class Text extends Handler {
             $item["title"] = $doc["title"];
             $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
             $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
-            $item["picUrl"] = "http://telework.duapp.com/static/remote$count.jpeg";
+            $item["picUrl"] = "http://telework.duapp.com/images/remote$count.jpeg";
             $items[] = $item;
             if ($count >= 9) {
                 break;

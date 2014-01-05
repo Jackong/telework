@@ -13,7 +13,10 @@ use router\Router;
 class App extends Router {
     public function get() {
         return array(
-            "light/app"
+            "light/app",
+            array(
+                "text" => "hello light app"
+            )
         );
     }
 

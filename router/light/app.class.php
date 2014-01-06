@@ -9,11 +9,9 @@ namespace router\light;
 
 
 use router\Router;
-use util\Log;
 
 class App extends Router {
     public function get() {
-        Log::Debug("entry to get");
         $_SERVER["HTTP_ACCEPT"] = "text/html";
         return array(
             "light/app",

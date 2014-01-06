@@ -21,14 +21,11 @@ class Factory {
     public static function formatter($accept) {
         Log::Debug($accept);
         if (false !== strpos($accept, "text/html") || false !== strpos($accept, "text/javascript")) {
-            Log::Debug("text");
             return new Text();
         }
         if (false !== strpos($accept, "application/xml")) {
-            Log::Debug("xml");
             return new Xml();
         }
-        Log::Debug("json");
         return new Json();
     }
 } 

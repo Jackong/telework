@@ -15,7 +15,7 @@ class App extends Router {
     public function get() {
         $_SERVER["HTTP_ACCEPT"] = "text/html";
         $job = new Job();
-        $items = $job->gets(2, 4);
+        $items = $job->gets(2, 9);
         return array(
             "light/app",
             array(

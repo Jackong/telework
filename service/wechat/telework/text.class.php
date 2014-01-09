@@ -9,6 +9,7 @@ namespace service\wechat\telework;
 
 
 use glob\config\source\_37Signals;
+use service\Job;
 use service\wechat\Handler;
 use util\Log;
 use util\Mongo;
@@ -53,31 +54,8 @@ class Text extends Handler {
     }
 
     private function huntJob($userId, $category) {
-        $jobs = Mongo::job("jobs");
-        $cursor = $jobs->find(
-            array(
-                "category" => new \MongoInt32($category),
-            ),
-            array(
-                "title" => true,
-                "description" => true,
-                "pubTime" => true,
-                "id" => true,
-            )
-        )->sort(array("pubTime" => -1));
-
-        $items = array();
-        foreach ($cursor as $doc) {
-            $count = count($items);
-            $item["title"] = $doc["title"];
-            $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
-            $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
-            $item["picUrl"] = "http://telework.duapp.com/images/remote$count.jpeg";
-            $items[] = $item;
-            if ($count >= 9) {
-                break;
-            }
-        }
+        $job = new Job();
+        $items = $job->gets($category, 10);
         if (empty($items)) {
             Log::Debug($userId, "can not found any job", $category);
             $job = _37Signals::$categories[$category]["lang"][1];

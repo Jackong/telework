@@ -7,7 +7,7 @@ domain: telework.duapp.com
 inum: '1'
 lang_type: php
 name: wechat
-release_revision: 8cb1abba2d92f7f6457fbcf4b241b0e9abdbd83e
+release_revision: 48d3a02622e489da24b6bf7d18f052dc2ce8c076
 repos_url: https://git.duapp.com/appid3a4r7f696e
 status: '4'
 version_type: git

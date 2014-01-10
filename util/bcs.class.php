@@ -6,7 +6,7 @@
  */
 
 namespace util;
-use glob\Service;
+use glob\Factory;
 
 require_once PROJECT . "/lib/service/bcs/bcs.class.php";
 
@@ -17,7 +17,8 @@ class Bcs {
         if (isset(self::$bcs)) {
             return self::$bcs;
         }
-        self::$bcs = new \BaiduBCS(Service::$ak, Service::$sk, "bcs.duapp.com");
+        $service = Factory::load("service");
+        self::$bcs = new \BaiduBCS($service["ak"], $service["sk"], "bcs.duapp.com");
         return self::$bcs;
     }
 } 

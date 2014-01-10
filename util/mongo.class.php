@@ -8,6 +8,7 @@
 namespace util;
 
 
+use glob\Factory;
 use glob\Service;
 
 class Mongo {
@@ -18,12 +19,13 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $config = Service::$mongo_cfg[$name];
+        $service = Factory::load("service");
+        $config = $service["mongo"][$name];
         $dbname = $config['dbname'];
         $host = $config['host'];
         $port = $config['port'];
-        $user = Service::$ak;
-        $pwd = Service::$sk;
+        $user = $service["ak"];
+        $pwd = $service["sk"];
 
         $mongoClient = new \MongoClient("mongodb://{$host}:{$port}");
         $db = $mongoClient->selectDB($dbname);

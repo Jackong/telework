@@ -1,6 +1,7 @@
 <?php
 
-namespace glob;
+namespace glob\dev;
+use glob\Config;
 
 class Service implements Config {
     public static function config() {
@@ -13,14 +14,14 @@ class Service implements Config {
             ),
             "mongo" => array(
                 "user" => array(
-                    'dbname' => 'RGFauSekXKrYgGCstaDB',
-                    'host' => 'mongo.duapp.com',
-                    'port' => '8908',
+                    'dbname' => 'user',
+                    'host' => '127.0.0.1',
+                    'port' => '27017',
                 ),
                 "job" => array(
-                    "dbname" => "XcdWGBMKMFLUcjNuLMzI",
-                    'host' => 'mongo.duapp.com',
-                    'port' => '8908',
+                    "dbname" => "job",
+                    'host' => '127.0.0.1',
+                    'port' => '27017',
                 ),
             )
         );

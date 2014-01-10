@@ -6,6 +6,7 @@
  */
 
 namespace util;
+use glob\Factory;
 use glob\Service;
 
 require_once PROJECT . "/lib/service/log/BaeLog.class.php";
@@ -16,9 +17,10 @@ class Log {
 
     private static function instance() {
         if (!isset(self::$baeLog)) {
-            $secret = array("user"=> Service::$ak,"passwd"=> Service::$sk);
+            $service = Factory::load("service");
+            $secret = array("user"=> $service["ak"],"passwd"=> $service["sk"]);
             self::$baeLog = \BaeLog::getInstance($secret);
-            self::$baeLog->setLogLevel(Service::$log_cfg["level"]);
+            self::$baeLog->setLogLevel($service["log"]["level"]);
         }
         return self::$baeLog;
     }

@@ -31,7 +31,7 @@ class Job {
             $item["title"] = $doc["title"];
             $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
             $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
-            $item["picUrl"] = "http://telework.duapp.com/images/remote$count.jpeg";
+            $item["picUrl"] = "/images/remote$count.jpeg";
             $items[$doc["id"]] = $item;
             if ($count >= $num - 1) {
                 break;

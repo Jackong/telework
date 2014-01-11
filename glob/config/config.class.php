@@ -5,7 +5,7 @@
  * Time: 下午9:45
  */
 
-namespace glob;
+namespace glob\config;
 
 
 interface Config {

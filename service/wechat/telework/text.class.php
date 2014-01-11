@@ -8,7 +8,7 @@
 namespace service\wechat\telework;
 
 
-use glob\config\source\_37Signals;
+use glob\config\Loader;
 use service\Job;
 use service\wechat\Handler;
 use util\Log;
@@ -22,7 +22,7 @@ class Text extends Handler {
         $category = $this->getCategory(trim($content));
         if (0 == $category) {
             Log::Notice($userId, "feedback", $content);
-            return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\config\Job::huntJobText());
+            return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\Job::huntJobText());
         }
         $this->registerHunter($userId, $createTime, $category);
         return $this->huntJob($userId, $category);
@@ -33,7 +33,7 @@ class Text extends Handler {
             return 0;
         }
         $category = intval($content);
-        if (!isset(_37Signals::$categories[$category])) {
+        if (is_null($this->category($category))) {
             return 0;
         }
         return $category;
@@ -58,11 +58,14 @@ class Text extends Handler {
         $items = $job->gets($category, 10);
         if (empty($items)) {
             Log::Debug($userId, "can not found any job", $category);
-            $job = _37Signals::$categories[$category]["lang"][1];
+            $job = $this->category("$category.lang.1");
             return $this->text($userId, "非常抱歉，暂时没有关于<$job>的招聘，稍后若有相关招聘，我们将第一时间为您送达，祝一切顺利。");
         }
         Log::Trace($userId, "found jobs", $category, count($items));
         return $this->news($userId, $items);
     }
 
+    private function category($category) {
+        return Loader::load("source._37signals|categories.$category");
+    }
 } 

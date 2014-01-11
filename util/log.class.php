@@ -6,8 +6,9 @@
  */
 
 namespace util;
-use glob\Factory;
-use glob\Service;
+
+
+use glob\config\Loader;
 
 require_once PROJECT . "/lib/service/log/BaeLog.class.php";
 
@@ -17,9 +18,13 @@ class Log {
 
     private static function instance() {
         if (!isset(self::$baeLog)) {
-            $service = Factory::load("service");
+            $service = Loader::load("service");
             $secret = array("user"=> $service["ak"],"passwd"=> $service["sk"]);
-            self::$baeLog = \BaeLog::getInstance($secret);
+            if (isset($service["log"]["distributed"]) && !$service["log"]["distributed"]) {
+                self::$baeLog = new NilLog($secret);
+            } else {
+                self::$baeLog = \BaeLog::getInstance($secret);
+            }
             self::$baeLog->setLogLevel($service["log"]["level"]);
         }
         return self::$baeLog;
@@ -71,6 +76,30 @@ class Log {
         $msg = self::format(func_get_args());
         self::log(16, $msg);
         self::instance()->Debug($msg);
+    }
+}
+
+class NilLog extends \BaeLog {
+    public function __construct($secret) {}
+
+    public function Fatal($logmsg)
+    {
+    }
+
+    public function Warning($logmsg)
+    {
+    }
+
+    public function Notice($logmsg)
+    {
+    }
+
+    public function Trace($logmsg)
+    {
+    }
+
+    public function Debug($logmsg)
+    {
     }
 
 }

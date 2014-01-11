@@ -8,7 +8,7 @@
 namespace test;
 
 
-use glob\Factory;
+use glob\Loader;
 use util\Mongo;
 
 class Usage extends \PHPUnit_Framework_TestCase {
@@ -23,7 +23,7 @@ class Usage extends \PHPUnit_Framework_TestCase {
     }
 
     public function testloadConfig() {
-        $service = Factory::load("service");
+        $service = Loader::load("service");
         $this->assertTrue(is_array($service));
     }
 }

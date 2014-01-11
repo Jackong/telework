@@ -9,7 +9,7 @@ require_once __DIR__ . "/../../bootstrap.php";
 
 class Handler implements \service\crawler\Handler {
     public function handle($data, $category) {
-        $info = \glob\config\source\_37Signals::$categories[$category]["lang"];
+        $info = \glob\config\Loader::load("source._37signals|categories.$category.lang");
         $jobsXml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
         $channel = $jobsXml->channel;
         if (!$this->checkTitle($channel->title, $info[0])) {
@@ -91,7 +91,7 @@ class Handler implements \service\crawler\Handler {
 </body>
 </html>";
         foreach ($jobs as $id => $job) {
-            $file = PROJECT . "/static/job.html";
+            $file = "/tmp/job.html";
             file_put_contents($file, sprintf($tpl, $job["title"], $job["content"], date("Y/m/d H:i", $job["pubTime"]), $job["link"]));
             $response = $bcs->create_object(
                 "telework-jobs",
@@ -118,7 +118,8 @@ class Handler implements \service\crawler\Handler {
 
 $crawler = new \service\crawler\Crawler(new Handler());
 
-foreach (\glob\config\source\_37Signals::$categories as $category => $_) {
-    $crawler->crawl(\glob\config\source\_37Signals::$host . "/categories/$category/jobs.rss", $category);
+$_37signals = \glob\config\Loader::load("source._37signals");
+foreach ($_37signals["categories"] as $category => $_) {
+    $crawler->crawl($_37signals["host"] . "/categories/$category/jobs.rss", $category);
 }
 

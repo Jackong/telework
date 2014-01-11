@@ -5,15 +5,15 @@
  * Time: 下午12:36
  */
 
-namespace glob\config;
+namespace glob;
 
 
-use glob\config\source\_37Signals;
+use glob\config\Loader;
 
 class Job {
     public static function huntJobText() {
         $categories = "";
-        foreach (_37Signals::$categories as $category => $info) {
+        foreach (Loader::load("source._37signals|categories") as $category => $info) {
             if (isset($info["support"]) && !$info["support"]) {
                 continue;
             }

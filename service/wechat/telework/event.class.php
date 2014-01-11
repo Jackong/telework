@@ -29,7 +29,7 @@ class Event extends Handler {
         Log::Trace($userId, $createTime);
         return $this->text(
             $userId,
-            "欢迎关注，远程工作为您服务。" . \glob\config\Job::huntJobText()
+            "欢迎关注，远程工作为您服务。" . \glob\Job::huntJobText()
         );
     }
 

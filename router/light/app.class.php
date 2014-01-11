@@ -19,7 +19,7 @@ class App extends Router {
         $main = Input::get("main", "/^(hunt|recruit)$/", "hunt");
         if ($main == "hunt") {
             $job = new Job();
-            $items = $job->gets(2, 12);
+            $items = $job->gets(2, 10);
             $mainTpl = new Template("light/hunt", array("items" => $items));
         } else {
             $mainTpl = new Template("light/recruit");

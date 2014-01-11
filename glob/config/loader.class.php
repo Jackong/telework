@@ -5,23 +5,21 @@
  * Time: 下午9:42
  */
 
-namespace glob;
+namespace glob\config;
 
 
-class Factory {
+class Loader {
     public static function load($keys) {
-        $keys = explode(".", $keys);
-        if (empty($keys)) {
-            return null;
+        if (strpos($keys, "|") !== false) {
+            list($module, $keys) = explode("|", $keys);
+            $keys = explode(".", $keys);
+        } else {
+            $module = $keys;
+            $keys = array();
         }
 
-        $namespace = self::prefix($keys[0]);
-        /**
-         * @var $object Config
-         */
-        $object = "$namespace$keys[0]";
+        $object = self::prefix($module);
         $config = $object::config();
-        unset($keys[0]);
         foreach ($keys as $key) {
             if (!isset($config[$key])) {
                 return null;
@@ -31,16 +29,21 @@ class Factory {
         return $config;
     }
 
+    /**
+     * @param $module Config
+     * @return mixed
+     */
     private static function prefix($module) {
-        $formal = "\\glob\\";
+        $module = str_replace(".", "\\", $module);
+        $formal = "\\glob\\config\\";
         $namespace = $formal;
         $appId = getenv('BAE_ENV_APPID');
         if (empty($appId) && !defined('BAE_ENV_APPID')) {
             $devConfig = PROJECT . str_replace("\\", "/", $namespace . "dev/$module.class.php");
             if (file_exists($devConfig)) {
-                $namespace .= "dev\\";
+                 return $namespace ."dev\\$module";
             }
         }
-        return $namespace;
+        return $namespace . "prod\\$module";
     }
 } 

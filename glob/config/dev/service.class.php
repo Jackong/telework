@@ -1,7 +1,7 @@
 <?php
 
-namespace glob\dev;
-use glob\Config;
+namespace glob\config\dev;
+use glob\config\Config;
 
 class Service implements Config {
     public static function config() {
@@ -11,6 +11,7 @@ class Service implements Config {
             "sk" => '2RGpR7kuue9wCQX4oFHL8hXYnE2zpsg4',
             "log" => array(
                 "level" => 16,
+                "distributed" => false,
             ),
             "mongo" => array(
                 "user" => array(

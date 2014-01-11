@@ -8,8 +8,7 @@
 namespace util;
 
 
-use glob\Factory;
-use glob\Service;
+use glob\config\Loader;
 
 class Mongo {
 
@@ -19,7 +18,7 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $service = Factory::load("service");
+        $service = Loader::load("service");
         $config = $service["mongo"][$name];
         $dbname = $config['dbname'];
         $host = $config['host'];

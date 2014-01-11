@@ -1,6 +1,7 @@
 <?php
 
-namespace glob;
+namespace glob\config\prod;
+use glob\config\Config;
 
 class Service implements Config {
     public static function config() {

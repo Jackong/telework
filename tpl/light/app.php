@@ -11,22 +11,29 @@
 <body>
     <div class="container">
 
-        <div class="masthead">
-            <h3 class="text-muted">自由人</h3>
-            <ul class="nav nav-justified">
-                <li class="active"><a href="/light/app?main=hunt">求职</a></li>
-                <li><a href="/light/app?main=recruit">招聘</a></li>
-            </ul>
-        </div>
-
         <?php is_null($this->sign) || $this->sign->render();?>
 
         <?php $this->main->render();?>
 
-        <!-- Site footer -->
-        <div class="footer">
-            <p>&copy; FreeIT 2014</p>
-        </div>
+        <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-7">
+                    <span class="sr-only">弹一个</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/light/app">自由人</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-navbar-collapse-7">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/light/app?main=hunt">求职</a></li>
+                    <li><a href="/light/app?main=recruit">招聘</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
 
     </div> <!-- /container -->
 </body>

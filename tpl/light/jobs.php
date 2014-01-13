@@ -14,14 +14,16 @@
 
 <div class="row text-center">
     <?php foreach ($this->items as $id => $item) {?>
-    <div onclick="<?= $item["url"];?>" class="col-lg-3 col-md-6 hero-feature">
-        <div class="thumbnail">
-            <img src="<?=$item["picUrl"];?>" alt="<?=$item["title"];?>">
-            <div class="caption">
-                <h3><?=$item["title"];?></h3>
-                <p><?=$item["description"];?></p>
+        <a href="<?= $item["url"];?>">
+            <div class="col-lg-3 col-md-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="<?=$item["picUrl"];?>" alt="<?=$item["title"];?>">
+                    <div class="caption">
+                        <h3><?=$item["title"];?></h3>
+                        <p><?=$item["description"];?></p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </a>
     <?php }?>
 </div>

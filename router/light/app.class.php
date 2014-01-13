@@ -16,21 +16,13 @@ use util\Input;
 class App extends Router {
     public function get() {
         $_SERVER["HTTP_ACCEPT"] = "text/html";
-        $main = Input::get("main", "/^(hunt|recruit)$/", "hunt");
-        if ($main == "hunt") {
-            $job = new Job();
-            $items = $job->gets(2, 10);
-            $mainTpl = new Template("light/hunt", array("items" => $items));
-        } else {
-            $mainTpl = new Template("light/recruit");
-        }
-
-        $sign = new Template("sign");
+        $job = new Job();
+        $items = $job->gets(2, 10);
+        $jobs = new Template("light/jobs", array("items" => $items));
         return array(
             "light/app",
             array(
-                "sign" => $sign,
-                "main" => $mainTpl,
+                "jobs" => $jobs,
             )
         );
     }

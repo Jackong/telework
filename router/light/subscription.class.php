@@ -9,10 +9,13 @@ namespace router\light;
 
 
 use router\Router;
+use util\Input;
 
 class Subscription extends Router {
-    public function get() {
-        return "developing";
+    public function post() {
+        $email = Input::get("email");
+        $position = Input::get("position");
+        return "OK";
     }
 
 } 

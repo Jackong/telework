@@ -12,9 +12,11 @@ use common\Template;
 use router\Router;
 use service\Job;
 use util\Input;
+use util\Log;
 
 class App extends Router {
     public function get() {
+        Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
         $_SERVER["HTTP_ACCEPT"] = "text/html";
         $job = new Job();
         $items = $job->gets(2, 10);

@@ -12,8 +12,8 @@ use util\Log;
 use util\Mongo;
 
 class Subscriber {
-    public function subscribe($userId, $from, $subject, $createTime = TIME){
-        $this->updateStatus($userId, $from, true, $createTime, $subject);
+    public function subscribe($userId, $from, $createTime = TIME){
+        $this->updateStatus($userId, $from, true, $createTime);
         Log::Trace($userId, $from, $createTime);
     }
 
@@ -22,7 +22,21 @@ class Subscriber {
         Log::Trace($userId, $from, $createTime);
     }
 
-    private function updateStatus($userId, $from, $status, $createTime, $subject = null) {
+    public function registerHunter($userId, $category, $createTime = TIME) {
+        $hunter = Mongo::user("hunter");
+        $hunter->update(
+            array("id" => $userId),
+            array(
+                "id" => $userId,
+                "createTime" => $createTime,
+                "category" => $category,
+            ),
+            array("upsert" => true)
+        );
+        Log::Trace($userId, "register hunter for", $category);
+    }
+
+    private function updateStatus($userId, $from, $status, $createTime) {
         $collection = Mongo::user("subscribe");
         $newObj = array(
                 "id" => $userId,
@@ -30,9 +44,6 @@ class Subscriber {
                 "type" => $from,
                 "status" => $status
             );
-        if (!is_null($subject)) {
-            $newObj["subject"] = $subject;
-        }
         $collection->update(
             array(
                 "id" => $userId

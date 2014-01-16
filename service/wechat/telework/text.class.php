@@ -10,6 +10,7 @@ namespace service\wechat\telework;
 
 use glob\config\Loader;
 use service\Job;
+use service\Subscriber;
 use service\wechat\Handler;
 use util\Log;
 use util\Mongo;
@@ -24,7 +25,8 @@ class Text extends Handler {
             Log::Notice($userId, "feedback", $content);
             return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\Job::huntJobText());
         }
-        $this->registerHunter($userId, $createTime, $category);
+        $subcriber = new Subscriber();
+        $subcriber->registerHunter($userId, $category, $createTime);
         return $this->huntJob($userId, $category);
     }
 
@@ -37,20 +39,6 @@ class Text extends Handler {
             return 0;
         }
         return $category;
-    }
-
-    private function registerHunter($userId, $createTime, $category) {
-        $hunter = Mongo::user("hunter");
-        $hunter->update(
-            array("id" => $userId),
-            array(
-                "id" => $userId,
-                "createTime" => $createTime,
-                "category" => $category,
-            ),
-            array("upsert" => true)
-        );
-        Log::Trace($userId, "register hunter for", $category);
     }
 
     private function huntJob($userId, $category) {

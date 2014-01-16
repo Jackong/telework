@@ -17,16 +17,13 @@
 
         <form class="form-inline" role="form">
             <div class="form-group">
+                <label class="sr-only" for="position">Position</label>
+                <select class="form-control" id="position">
                 <?php foreach($this->categories as $id => $category) { ?>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="position" id="<?= $id;?>" value="<?= $id;?>">
-                        <?= $category; ?>
-                    </label>
-                </div>
+                    <option value="<?= $id; ?>"><?= $category; ?></option>
                 <?php }?>
+                </select>
             </div>
-            <br>
             <div class="form-group">
                 <label class="sr-only" for="email">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Email">

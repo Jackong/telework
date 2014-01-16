@@ -12,6 +12,7 @@ use common\Template;
 use glob\config\Loader;
 use router\Router;
 use service\Job;
+use service\Subscriber;
 use util\Encrypt;
 use util\Input;
 use util\Log;
@@ -25,7 +26,10 @@ class Confirm extends Router {
         $ok = ($email === $deEmail);
         $tips = '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
         if ($ok) {
-            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 ' . $position . ' 相关信息。</div>';
+            $category = Loader::load("source._37signals|categories.$position.lang.1");
+            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 ' . $category . ' 相关信息。</div>';
+            $subscriber = new Subscriber();
+            $subscriber->registerHunter($email, $category);
         }
         Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT'], $email, $deEmail);
         $_SERVER["HTTP_ACCEPT"] = "text/html";

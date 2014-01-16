@@ -21,16 +21,16 @@ class Bcms {
         if (isset(static::$bcms)) {
             return static::$bcms;
         }
-        $host = "bcms.api.duapp.com";
-        $service = Loader::load("service");
-        static::$bcms = new \Bcms($service["ak"], $service["sk"], $host);
+        $config = Loader::load('service|bcms');
+        static::$bcms = new \Bcms($config["accessKey"], $config["secretKey"], $config['host']);
         return static::$bcms;
     }
 
-    public static function mail($subject, $body, array $to, $from = "service@telework.com") {
+    public static function mail($subject, $body, array $to, $from = "no-reply@telework.com") {
         $bcms = self::instance();
-        $ret = $bcms->mail("a532ac7436c3b7003791b4d2f9d0153b", $body, $to, array(
+        $ret = $bcms->mail(Loader::load('service|bcms.queues.mail'), $body, $to, array(
             \Bcms::MAIL_SUBJECT => $subject,
+            \Bcms::FROM => $from,
         ));
         if ($ret === false) {
             Log::Warning($bcms->getRequestId(), $bcms->errno(), $bcms->errmsg());

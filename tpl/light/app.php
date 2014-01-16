@@ -55,15 +55,16 @@
         $(function() {
             $("button#submit").click(function(){
                 event.preventDefault();
+                var email = $("#email").val();
                 $.ajax({
                     type: "POST",
                     url: "/light/subscription",
                     data: {
                         "position": $("#position").val(),
-                        "email": $("#email").val()
+                        "email": email
                     },
                     success: function(msg){
-                        $("#success").html("订阅成功，请注意查收邮件，避免邮件进入垃圾箱。").removeClass("hide");
+                        $("#success").html("提交成功，您需要到邮箱:<a href='mailto:"+ email +"'>"+ email +"</a>查收并确认是你的邮箱才能成功订阅（提示：可能进入垃圾箱）。").removeClass("hide");
                     },
                     error: function(){
                         $("#failure").html("非常抱歉，订阅失败，请稍候重试。").removeClass("hide");

@@ -8,6 +8,8 @@
 namespace test\syntax;
 
 
+use util\Bcms;
+
 class Syntax extends \PHPUnit_Framework_TestCase {
 
     public function testExplode() {
@@ -93,6 +95,10 @@ Highly competitive, self-starter with good team skills
         $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
 
         return $html;
+    }
+
+    public function testBcms() {
+        $this->assertTrue(Bcms::mail("test subject", "test body", array('jerkong@163.com')));
     }
 
 

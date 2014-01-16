@@ -32,6 +32,7 @@
           <p>
             <div id="success" class="hide alert alert-success"></div>
             <div id="failure" class="hide alert alert-danger"></div>
+            <?php if(!is_null($this->tips)){ echo $this->tips;} ?>
           </p>
       </div>
       

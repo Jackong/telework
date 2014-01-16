@@ -20,14 +20,21 @@ class Confirm extends Router {
     public function get() {
         $id = Input::get("id");
         $email = Input::get("email", "/([\w\-]+\@[\w\-]+\.[\w\-]+)/");
+        $position = Input::get("position", "/(.+?){1,15}/");
         $deEmail = Encrypt::decrypt($id, Loader::load("sys|salt"));
         $ok = ($email === $deEmail);
         $tips = '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
         if ($ok) {
-            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上相关信息。</div>';
+            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 ' . $position . ' 相关信息。</div>';
         }
         Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT'], $email, $deEmail);
         $_SERVER["HTTP_ACCEPT"] = "text/html";
+
+        $categories = Loader::load("source._37signals|categories");
+        foreach ($categories as $id => $category) {
+            $categories[$id] = $category["lang"][1];
+        }
+
         $job = new Job();
         $items = $job->gets(2, 10);
         $jobs = new Template("light/jobs", array("items" => $items));
@@ -36,6 +43,7 @@ class Confirm extends Router {
             array(
                 "jobs" => $jobs,
                 "tips" => $tips,
+                "categories" => $categories,
             )
         );
     }

@@ -13,13 +13,20 @@
       <div class="jumbotron hero-spacer">
         <h1>自由人</h1>
         <p>国内首个专注于提供远程办公求职招聘服务的平台，愿求职者找到满意工作，愿招聘者找到合意人才。</p>
+        <hr>
 
         <form class="form-inline" role="form">
             <div class="form-group">
-                <label class="sr-only" for="position">Position</label>
-                <input type="text" class="form-control" id="position" placeholder="职位">
+                <?php foreach($this->categories as $id => $category) { ?>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="position" id="<?= $id;?>" value="<?= $id;?>">
+                        <?= $category; ?>
+                    </label>
+                </div>
+                <?php }?>
             </div>
-
+            <br>
             <div class="form-group">
                 <label class="sr-only" for="email">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Email">
@@ -32,7 +39,7 @@
           <p>
             <div id="success" class="hide alert alert-success"></div>
             <div id="failure" class="hide alert alert-danger"></div>
-            <?php if(!is_null($this->tips)){ echo $this->tips;} ?>
+            <?= $this->tips; ?>
           </p>
       </div>
       

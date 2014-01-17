@@ -10,23 +10,30 @@ namespace service\wechat\telework;
 
 use glob\config\Loader;
 use service\Job;
-use service\Subscriber;
+use service\User;
 use service\wechat\Handler;
 use util\Log;
-use util\Mongo;
 
 class Text extends Handler {
+
+    /**
+     * @var \service\User
+     */
+    private $user;
+
+    public function __construct() {
+        $this->user = new User();
+    }
+
     public function handle(\SimpleXMLElement $subject) {
         $userId = $subject->FromUserName;
-        $createTime = $subject->CreateTime;
         $content = $subject->Content;
         $category = $this->getCategory(trim($content));
         if (0 == $category) {
             Log::Notice($userId, "feedback", $content);
             return $this->text($userId, "谢谢您的反馈，我们将尽快处理。" . \glob\Job::huntJobText());
         }
-        $subcriber = new Subscriber();
-        $subcriber->registerHunter($userId, $category, $createTime);
+        $this->user->subscribe($userId, "wechat", $category);
         return $this->huntJob($userId, $category);
     }
 

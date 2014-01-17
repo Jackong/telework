@@ -3,6 +3,11 @@ namespace router;
 class Router {
     public function __construct() {
         $this->status();
+        $this->init();
+    }
+
+    protected function init() {
+
     }
 
 	public function get() {

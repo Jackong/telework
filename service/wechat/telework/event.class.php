@@ -8,18 +8,23 @@
 namespace service\wechat\telework;
 
 
-use service\Subscriber;
+use service\User;
 use service\wechat\Handler;
 
 class Event extends Handler {
+    private $user;
+
+    public function __construct() {
+        $this->user = new User();
+    }
+
+
     public function handle(\SimpleXMLElement $subject) {
         $fromUserName = $subject->FromUserName;
-        $createTime = $subject->CreateTime;
         $event = (string)$subject->Event;
-        $subscriber = new Subscriber();
-        if (!method_exists($subscriber, $event)) {
+        if (!method_exists($this->user, $event)) {
             return null;
         }
-        return $this->$event($fromUserName, "wechat", null, $createTime);
+        return $this->$event($fromUserName, "wechat");
     }
 } 

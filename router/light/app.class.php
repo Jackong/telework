@@ -17,8 +17,9 @@ use util\Log;
 
 class App extends Router {
     public function get() {
-        Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
         $_SERVER["HTTP_ACCEPT"] = "text/html";
+
+        Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
         $job = new Job();
         $items = $job->gets(2, 10);
         $jobs = new Template("light/jobs", array("items" => $items));

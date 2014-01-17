@@ -19,21 +19,15 @@ use util\Log;
 
 class Confirm extends Router {
     public function get() {
+        $_SERVER["HTTP_ACCEPT"] = "text/html";
+
         $id = Input::get("id");
         $email = Input::get("email", "/([\w\-]+\@[\w\-]+\.[\w\-]+)/");
         $position = Input::get("position", "/(.+?){1,15}/");
         $deEmail = Encrypt::decrypt($id, Loader::load("sys|salt"));
         $ok = ($email === $deEmail);
-        $tips = '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
-        if ($ok) {
-            $category = Loader::load("source._37signals|categories.$position.lang.1");
-            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 ' . $category . ' 相关信息。</div>';
-            $subscriber = new Subscriber();
-            $subscriber->registerHunter($email, $category);
-        }
-        Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT'], $email, $deEmail);
-        $_SERVER["HTTP_ACCEPT"] = "text/html";
 
+        Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT'], $email, $deEmail);
         $categories = Loader::load("source._37signals|categories");
         foreach ($categories as $id => $category) {
             $categories[$id] = $category["lang"][1];
@@ -46,9 +40,20 @@ class Confirm extends Router {
             "light/app",
             array(
                 "jobs" => $jobs,
-                "tips" => $tips,
+                "tips" => $this->getTips($ok, $email, $position),
                 "categories" => $categories,
             )
         );
+    }
+
+    private function getTips($ok, $email, $position) {
+        $tips = '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
+        if ($ok) {
+            $category = Loader::load("source._37signals|categories.$position.lang.1");
+            $tips = '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 ' . $category . ' 相关信息。</div>';
+            $subscriber = new Subscriber();
+            $subscriber->registerHunter($email, $category);
+        }
+        return $tips;
     }
 } 

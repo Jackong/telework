@@ -8,11 +8,8 @@
 namespace router\light;
 
 
-use router\Router;
-
-class Recruit extends Router {
+class Recruit {
     public function get() {
         return "developing";
     }
-
 } 

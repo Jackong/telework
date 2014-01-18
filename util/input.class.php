@@ -7,14 +7,14 @@
 
 namespace util;
 
-use common\Exception;
+use Slim\Slim;
 
 class Input {
 
     public static function get($name, $pattern = null, $default = null) {
         if (!isset($_REQUEST[$name])) {
             if (is_null($default)) {
-                throw new Exception("invalid parameter $name", Exception::INVALID_INPUT);
+                Slim::getInstance()->halt(400, "invalid parameter $name");
             }
             return $default;
         }
@@ -25,6 +25,6 @@ class Input {
         if (preg_match($pattern, $value, $matches)) {
             return $value;
         }
-        throw new Exception("invalid parameter $name", Exception::INVALID_INPUT);
+        Slim::getInstance()->halt(400, "invalid parameter $name");
     }
 }

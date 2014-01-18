@@ -39,7 +39,7 @@ class Loader {
         $namespace = $formal;
         $appId = getenv('BAE_ENV_APPID');
         if (empty($appId) && !defined('BAE_ENV_APPID')) {
-            $devConfig = PROJECT . str_replace("\\", "/", $namespace . "dev/$module.class.php");
+            $devConfig = PROJECT . str_replace("\\", "/", $namespace . "dev/$module.php");
             if (file_exists($devConfig)) {
                  return $namespace ."dev\\$module";
             }

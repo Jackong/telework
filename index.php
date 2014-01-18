@@ -34,7 +34,8 @@ session_start();
 
 list(, $group, $router) = explode('/', $app->request()->getResourceUri());
 $app->group("/$group", function() use ($group, $router, $app) {
-    $routerFile = PROJECT . "/router/$group/$router.class.php";
+    $router = ucfirst($router);
+    $routerFile = PROJECT . "/router/$group/$router.php";
     if (file_exists($routerFile)) {
         require_once $routerFile;
     }

@@ -8,6 +8,7 @@
 namespace service\wechat\telework;
 
 
+use glob\Job;
 use service\User;
 use service\wechat\Handler;
 
@@ -25,6 +26,7 @@ class Event extends Handler {
         if (!method_exists($this->user, $event)) {
             return null;
         }
-        return $this->$event($fromUserName, "wechat");
+        $this->$event($fromUserName, "wechat");
+        return Job::huntJobText();
     }
 } 

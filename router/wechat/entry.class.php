@@ -8,19 +8,18 @@
 namespace router\wechat;
 
 
-use router\Router;
 use service\wechat\Handler;
+use Slim\Slim;
 use util\Input;
 use util\Log;
 
-class Entry extends Router {
+class Entry {
     const TOKEN = "RemoteWork";
 
-    public function get() {
+    public function check() {
         if ($this->checkSign()) {
-            return Input::get("echostr");
+            echo Input::get("echostr");
         }
-        return null;
     }
 
     private function checkSign() {
@@ -37,14 +36,14 @@ class Entry extends Router {
         return $tmpStr == $signature;
     }
 
-    public function post() {
+    public function interact() {
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         Log::Trace($postStr);
         //extract post data
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             if (!isset($postObj->ToUserName) || $postObj->ToUserName != Handler::MYID) {
-                return null;
+                return;
             }
             $hndName = "\\service\\wechat\\telework\\" . ucfirst($postObj->MsgType);
             /**
@@ -52,11 +51,14 @@ class Entry extends Router {
              */
             $handler = new $hndName();
             if ($handler->needCheck() && !$this->checkSign()) {
-                return null;
+                return;
             }
-            return $handler->handle($postObj);
+            echo $handler->handle($postObj);
         }
-        return null;
     }
 
-} 
+}
+
+$entry = new Entry();
+Slim::getInstance()->get('/entry', array($entry, 'check'));
+Slim::getInstance()->post('/entry', array($entry, 'interact'));

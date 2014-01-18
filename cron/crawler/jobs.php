@@ -7,6 +7,12 @@
 
 require_once __DIR__ . "/../../bootstrap.php";
 
+\util\Log::setLogger(
+    new \common\Logger(
+        new \common\writer\FileWriter('/home/bae/log/cron.log.' . DATE, 'a')
+    )
+);
+
 class Handler implements \service\crawler\Handler {
     public function handle($data, $category) {
         $info = \glob\config\Loader::load("source._37signals|categories.$category.lang");
@@ -19,12 +25,12 @@ class Handler implements \service\crawler\Handler {
     }
 
     private function collect($category, $items) {
-        \cron\Log::Trace($category, "the number of items are found", count($items));
+        \util\Log::Trace($category, "the number of items are found", count($items));
         $jobs = \util\Mongo::job("jobs");
         $jobList = array();
         foreach ($items as $item) {
             if (!isset($item->guid) || !isset($item->title) || !isset($item->description)) {
-                \cron\Log::Warning($category, "bad data for job", json_encode($item));
+                \util\Log::Warning($category, "bad data for job", json_encode($item));
                 continue;
             }
             $guid = (string) $item->guid;
@@ -56,7 +62,7 @@ class Handler implements \service\crawler\Handler {
             );
         }
         $this->upload2Bcs($category, $jobList);
-        \cron\Log::Trace($category, "the number of items are collected", count($jobList));
+        \util\Log::Trace($category, "the number of items are collected", count($jobList));
     }
 
     private function getDescription($content) {
@@ -100,16 +106,16 @@ class Handler implements \service\crawler\Handler {
                 $opt
             );
             if (!$response->isOK()) {
-                \cron\Log::Warning($category, $id, "bcs can not create object");
+                \util\Log::Warning($category, $id, "bcs can not create object");
             }
         }
 
     }
 
     private function checkTitle($title, $enInfo) {
-        \cron\Log::Trace($enInfo, $title);
+        \util\Log::Trace($enInfo, $title);
         if (strpos($title, $enInfo) === false) {
-            \cron\Log::Warning($enInfo, $title);
+            \util\Log::Warning($enInfo, $title);
             return false;
         }
         return true;

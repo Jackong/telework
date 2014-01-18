@@ -1,10 +1,13 @@
 <?php
+//app env
 require_once("bootstrap.php");
-require PROJECT . '/lib/slim/Slim/Slim.php';
 
+//slim env
+require PROJECT . '/lib/slim/Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
 
+//twig env
 require_once PROJECT . '/lib/Twig/Autoloader.php';
 Twig_Autoloader::register(true);
 
@@ -12,8 +15,15 @@ Twig_Autoloader::register(true);
 $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig(),
     'debug' => false,
-    'templates.path' => PROJECT . '/tpl'
+    'templates.path' => PROJECT . '/tpl',
 ));
+
+\util\Log::setLogger(
+    new \common\Logger(
+        new \common\writer\FileWriter('/home/bae/log/user.log.' . DATE, 'a'),
+        glob\config\Loader::load('service|log.level')
+    )
+);
 
 $app->error(function(Exception $e) use($app) {
     \util\Log::Fatal($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine());

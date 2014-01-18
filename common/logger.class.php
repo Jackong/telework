@@ -35,8 +35,8 @@ abstract class Logger {
         foreach ($messages as $message) {
             $msgStr .= "|$message";
         }
-        $class = isset($caller['class']) ? $caller['class'] : "nilClass";
-        $func = isset($caller['functon']) ? $caller['function'] : "nilFunc";
+        $class = isset($caller['class']) ? $caller['class'] : 'nilClass';
+        $func = isset($caller['function']) ? $caller['function'] : 'nilFunc';
         $msg = sprintf("%d %s - %s>%s%s\n", $level, NOW, $class, $func, $msgStr);
         fwrite(static::hnd(), $msg);
     }

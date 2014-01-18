@@ -1,6 +1,5 @@
 <?php
 require_once("bootstrap.php");
-
 require PROJECT . '/lib/slim/Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -27,6 +26,7 @@ $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
 
+session_start();
 
 $app->group('/light', function() use($app) {
 
@@ -64,53 +64,38 @@ $app->group('/light', function() use($app) {
     });
 
 
-    function checkSign($id, $email) {
+    $app->get('/confirm/:id/:email/:category', function($id, $email, $category) use($app) {
         $deEmail = \util\Encrypt::decrypt($id, \glob\config\Loader::load("sys|salt"));
-        return ($email === $deEmail);
-    }
 
-    function getTips($ok, $position) {
+        $ok = ($email === $deEmail);
+
         if ($ok) {
-            $category = \glob\config\Loader::load("source._37signals|categories.$position.lang.1");
-            if (is_null($category)) {
-                return '<div id="failure" class="alert alert-danger">抱歉，您订阅的职位不存在，请重新订阅。</div>';
+            $categoryName = \glob\config\Loader::load("source._37signals|categories.$category.lang.1");
+            if (is_null($categoryName)) {
+                $app->flash("failure", "抱歉，您订阅的职位不存在，请重新订阅。");
+            } else {
+                $app->flash("success", "恭喜您订阅成功，稍候将第一时间为您送上 $categoryName 相关信息。");
+                $user = new \service\User();
+                $user->subscribe(strtolower($email), "email", $category);
             }
-            return '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 "' . $category . '" 相关信息。</div>';
-        }
-
-        return '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
-    }
-
-    $app->get('/confirm/:id/:email/:category', function($id, $email, $category) {
-
-        $ok = checkSign($id, $email);
-
-        if ($ok) {
-            $user = new \service\User();
-            $user->subscribe(strtolower($email), "email", $category);
+        } else {
+            $app->flash("failure", "订阅确认失败，这不是你的邮箱。");
         }
 
         \util\Log::Trace($email, $ok);
 
         $categories = \glob\config\Loader::load("source._37signals|categories");
-        foreach ($categories as $id => $category) {
-            $categories[$id] = $category["lang"][1];
+        foreach ($categories as $id => $cate) {
+            $categories[$id] = $cate["lang"][1];
         }
 
         $job = new \service\Job();
         $items = $job->gets(2, 10);
-        return array(
-            "light/app",
-            array(
-                "jobs" => $items,
-                "tips" => getTips($ok, $category),
-                "categories" => $categories,
-            )
-        );
+        $app->render('light/app.html', array('categories' => $categories, 'jobs' => $items));
     })->conditions(
             array(
-            'email' => '/([\w\-]+\@[\w\-]+\.[\w\-]+)/',
-            'position' => '/^[0-9]{1}$/',
+            'email' => '([\w\-]+\@[\w\-]+\.[\w\-]+)',
+            'category' => '[0-9]{1}',
             )
         );
 });

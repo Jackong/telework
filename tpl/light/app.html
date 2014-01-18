@@ -34,9 +34,8 @@
             <a class="btn btn-link" href="/light/recruit">发布招聘</a>
         </form>
           <p>
-            <div id="success" class="hide alert alert-success"></div>
-            <div id="failure" class="hide alert alert-danger"></div>
-          {{ tips }}
+            <div id="success" class="{% if flash.success is null %}hide{% endif %} alert alert-success">{{flash.success}}</div>
+            <div id="failure" class="{% if flash.failure is null %}hide{% endif %} alert alert-danger">{{flash.failure}}</div>
           </p>
       </div>
       

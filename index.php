@@ -1,6 +1,118 @@
 <?php
 require_once("bootstrap.php");
-$response = \util\Mapper::handle($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]);
-$formatter = \util\Factory::formatter($_SERVER["HTTP_ACCEPT"]);
 
-$formatter->output($response);
+require PROJECT . '/lib/slim/Slim/Slim.php';
+
+\Slim\Slim::registerAutoloader();
+
+
+require_once PROJECT . '/lib/Twig/Autoloader.php';
+Twig_Autoloader::register(true);
+
+
+$app = new \Slim\Slim(array(
+    'view' => new \Slim\Views\Twig(),
+    'debug' => true,
+    'templates.path' => PROJECT . '/tpl'
+));
+
+
+$view = $app->view();
+$view->parserOptions = array(
+    'debug' => true,
+    'cache' => '/home/bae/cache'
+);
+
+$view->parserExtensions = array(
+    new \Slim\Views\TwigExtension(),
+);
+
+
+$app->group('/light', function() use($app) {
+
+    $app->get("/app", function() use($app){
+        \util\Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
+        $job = new \service\Job();
+        $items = $job->gets(2, 10);
+        $categories = \glob\config\Loader::load("source._37signals|categories");
+        foreach ($categories as $id => $category) {
+            $categories[$id] = $category["lang"][1];
+        }
+        $app->render('light/app.html', array('categories' => $categories, 'jobs' => $items));
+    });
+
+    $app->post('/subscription', function() use($app) {
+        $email = \util\Input::get("email", "/([\w\-]+\@[\w\-]+\.[\w\-]+)/");
+        $position = \util\Input::get("position", "/(.+?){1,15}/");
+
+        $category = \glob\config\Loader::load("source._37signals|categories.$position.lang.1");
+
+        if (is_null($category)) {
+            return;
+        }
+
+        $user = new \service\User();
+        $user->subscribe(strtolower($email), "email");
+
+        $id = \util\Encrypt::encrypt($email, \glob\config\Loader::load("sys|salt"));
+        \util\Bcms::mail(
+            "自由人远程职位订阅确认",
+            "<!--HTML-->您好，您在<a href='http://telework.duapp.com/app/light'>自由人</a>上订阅了 '$category' 职位。<br>
+            如有您需要的职位，我们将会第一时间通知你。请点击以下链接，确认激活订阅（如非本人操作，请匆点击）：<br>
+            <a href='http://telework.duapp.com/light/confirm/$id/$email/$position'>确认订阅</a>",
+            array($email));
+    });
+
+
+    function checkSign($id, $email) {
+        $deEmail = \util\Encrypt::decrypt($id, \glob\config\Loader::load("sys|salt"));
+        return ($email === $deEmail);
+    }
+
+    function getTips($ok, $position) {
+        if ($ok) {
+            $category = \glob\config\Loader::load("source._37signals|categories.$position.lang.1");
+            if (is_null($category)) {
+                return '<div id="failure" class="alert alert-danger">抱歉，您订阅的职位不存在，请重新订阅。</div>';
+            }
+            return '<div id="success" class="alert alert-success">恭喜您订阅成功，稍候将第一时间为您送上 "' . $category . '" 相关信息。</div>';
+        }
+
+        return '<div id="failure" class="alert alert-danger">订阅确认失败，这不是你的邮箱。</div>';
+    }
+
+    $app->get('/confirm/:id/:email/:category', function($id, $email, $category) {
+
+        $ok = checkSign($id, $email);
+
+        if ($ok) {
+            $user = new \service\User();
+            $user->subscribe(strtolower($email), "email", $category);
+        }
+
+        \util\Log::Trace($email, $ok);
+
+        $categories = \glob\config\Loader::load("source._37signals|categories");
+        foreach ($categories as $id => $category) {
+            $categories[$id] = $category["lang"][1];
+        }
+
+        $job = new \service\Job();
+        $items = $job->gets(2, 10);
+        return array(
+            "light/app",
+            array(
+                "jobs" => $items,
+                "tips" => getTips($ok, $category),
+                "categories" => $categories,
+            )
+        );
+    })->conditions(
+            array(
+            'email' => '/([\w\-]+\@[\w\-]+\.[\w\-]+)/',
+            'position' => '/^[0-9]{1}$/',
+            )
+        );
+});
+
+$app->run();

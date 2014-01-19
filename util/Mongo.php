@@ -8,7 +8,7 @@
 namespace util;
 
 
-use glob\config\Loader;
+use glob\config\Service;
 
 class Mongo {
 
@@ -18,7 +18,7 @@ class Mongo {
         if (isset(self::$dbs[$name])) {
             return self::$dbs[$name];
         }
-        $service = Loader::load("service");
+        $service = Service::get();
         $config = $service["mongo"][$name];
         $dbname = $config['dbname'];
         $host = $config['host'];

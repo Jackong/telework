@@ -21,7 +21,7 @@ $app = new \Slim\Slim(array(
 \util\Log::setLogger(
     new \common\Logger(
         new \common\writer\FileWriter('/home/bae/log/user.log.' . DATE, 'a'),
-        glob\config\Loader::load('service|log.level')
+        \glob\config\Service::get('log', 'level')
     )
 );
 

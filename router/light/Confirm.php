@@ -8,9 +8,9 @@
 namespace router\light;
 
 
-use glob\config\Loader;
+use glob\config\source\_37Signals;
+use glob\config\Sys;
 use service\Job;
-use service\User;
 use Slim\Slim;
 use util\Encrypt;
 use util\Log;
@@ -20,13 +20,13 @@ use util\Log;
 class Confirm {
 
     public function confirm($id, $email, $category) {
-        $deEmail = Encrypt::decrypt($id, Loader::load("sys|salt"));
+        $deEmail = Encrypt::decrypt($id, Sys::get('salt'));
 
         $ok = ($email === $deEmail);
 
         $app = Slim::getInstance();
         if ($ok) {
-            $categoryName = Loader::load("source._37signals|categories.$category.lang.1");
+            $categoryName = _37Signals::get('categories', $category, 'lang', 1);
             if (is_null($categoryName)) {
                 $app->flash("failure", "抱歉，您订阅的职位不存在，请重新订阅。");
             } else {
@@ -40,7 +40,7 @@ class Confirm {
 
         Log::Trace($email, $ok);
 
-        $categories = Loader::load("source._37signals|categories");
+        $categories = _37Signals::get('categories');
         foreach ($categories as $id => $cate) {
             $categories[$id] = $cate["lang"][1];
         }

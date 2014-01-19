@@ -8,7 +8,7 @@
 namespace router\light;
 
 
-use glob\config\Loader;
+use glob\config\source\_37Signals;
 use service\Job;
 use Slim\Slim;
 use util\Log;
@@ -20,7 +20,7 @@ class App {
         Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
         $job = new Job();
         $items = $job->gets(2, 10);
-        $categories = Loader::load("source._37signals|categories");
+        $categories = _37Signals::get('categories');
         foreach ($categories as $id => $category) {
             $categories[$id] = $category["lang"][1];
         }

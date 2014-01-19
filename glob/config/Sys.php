@@ -5,13 +5,11 @@
  * Time: 下午9:46
  */
 
-namespace glob\config\prod;
+namespace glob\config;
 
 
-use glob\config\Config;
-
-class Sys implements Config{
-    public static function config()
+class Sys extends Config{
+    protected function prod()
     {
         return array(
             "salt" => "w#@!E!c#%@%&",

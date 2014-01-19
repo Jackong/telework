@@ -1,10 +1,9 @@
 <?php
 
-namespace glob\config\prod;
-use glob\config\Config;
+namespace glob\config;
 
-class Service implements Config {
-    public static function config() {
+class Service extends Config {
+    protected function prod() {
         return array(
             "app_id" => 1959167,
             "ak" => 'GXTnHcjgvKPIl1MKbdxnmcQK',
@@ -33,5 +32,26 @@ class Service implements Config {
                 )
             )
         );
+    }
+
+    protected function dev() {
+        $dev = array(
+            "mongo" => array(
+                "user" => array(
+                    'dbname' => 'user',
+                    'host' => '127.0.0.1',
+                    'port' => '27017',
+                ),
+                "job" => array(
+                    "dbname" => "job",
+                    'host' => '127.0.0.1',
+                    'port' => '27017',
+                ),
+            ),
+        );
+
+        $prod = $this->prod();
+        $prod['mongo'] = $dev['mongo'];
+        return $prod;
     }
 }

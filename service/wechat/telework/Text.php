@@ -8,7 +8,7 @@
 namespace service\wechat\telework;
 
 
-use glob\config\Loader;
+use glob\config\source\_37Signals;
 use service\Job;
 use service\User;
 use service\wechat\Handler;
@@ -61,6 +61,6 @@ class Text extends Handler {
     }
 
     private function category($category) {
-        return Loader::load("source._37signals|categories.$category");
+        return _37Signals::get('categories', $category);
     }
 } 

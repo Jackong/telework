@@ -7,7 +7,7 @@
 
 namespace util;
 
-use glob\config\Loader;
+use glob\config\Service;
 
 require_once PROJECT . "/lib/service/bcms/Bcms.class.php";
 
@@ -21,14 +21,14 @@ class Bcms {
         if (isset(static::$bcms)) {
             return static::$bcms;
         }
-        $config = Loader::load('service|bcms');
+        $config = Service::get('bcms');
         static::$bcms = new \Bcms($config["accessKey"], $config["secretKey"], $config['host']);
         return static::$bcms;
     }
 
     public static function mail($subject, $body, array $to, $from = "no-reply@telework.com") {
         $bcms = self::instance();
-        $ret = $bcms->mail(Loader::load('service|bcms.queues.mail'), $body, $to, array(
+        $ret = $bcms->mail(Service::get('bcms', 'queue', 'mail'), $body, $to, array(
             \Bcms::MAIL_SUBJECT => $subject,
             \Bcms::FROM => $from,
         ));

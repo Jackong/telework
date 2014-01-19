@@ -4,12 +4,12 @@
  * Date: 13-12-28
  * Time: 上午9:50
  */
-namespace glob\config\prod\source;
+namespace glob\config\source;
 
 use glob\config\Config;
 
-class _37Signals implements Config{
-    public static function config() {
+class _37Signals extends Config{
+    protected function prod() {
         return array(
             "host" => "https://weworkremotely.com",
             "categories" => array(

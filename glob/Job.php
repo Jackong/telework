@@ -8,12 +8,12 @@
 namespace glob;
 
 
-use glob\config\Loader;
+use glob\config\source\_37Signals;
 
 class Job {
     public static function huntJobText() {
         $categories = "";
-        foreach (Loader::load("source._37signals|categories") as $category => $info) {
+        foreach (_37Signals::get('categories') as $category => $info) {
             if (isset($info["support"]) && !$info["support"]) {
                 continue;
             }

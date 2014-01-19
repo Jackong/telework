@@ -8,7 +8,8 @@
 namespace router\light;
 
 
-use glob\config\Loader;
+use glob\config\source\_37Signals;
+use glob\config\Sys;
 use service\User;
 use Slim\Slim;
 use util\Bcms;
@@ -22,7 +23,7 @@ class Subscription {
         $email = Input::get("email", "/([\w\-]+\@[\w\-]+\.[\w\-]+)/");
         $position = Input::get("position", "/(.+?){1,15}/");
 
-        $category = Loader::load("source._37signals|categories.$position.lang.1");
+        $category = _37Signals::get('categories', $position, 'lang', 1);
 
         if (is_null($category)) {
             return;
@@ -31,7 +32,7 @@ class Subscription {
         $user = new User();
         $user->subscribe(strtolower($email), "email");
 
-        $id = Encrypt::encrypt($email, Loader::load("sys|salt"));
+        $id = Encrypt::encrypt($email, Sys::get('salt'));
         Bcms::mail(
             "自由人远程职位订阅确认",
             "<!--HTML-->您好，您在<a href='http://telework.duapp.com/app/light'>自由人</a>上订阅了 '$category' 职位。<br>

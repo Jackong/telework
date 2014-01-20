@@ -13,10 +13,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-menu-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#feedback">反馈</a></li>
+                <li><a href="#feedback" data-toggle="modal" data-target="#feedback" data-keyboard="true">反馈</a></li>
                 <li><a href="#about">关于</a></li>
                 <li><a href="#donate">捐赠</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
 </nav>
+
+{% include 'light/modals.html' %}

@@ -8,15 +8,36 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="联系方式（选填）">
+                    <input type="text" id="contact" class="form-control" placeholder="联系方式（选填，Email，手机号码或QQ）">
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" rows="3" placeholder="反馈内容"></textarea>
+                    <textarea class="form-control" id="content" rows="3" placeholder="我们的进步需要您的宝贵建议和意见。"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">提交</button>
+                <button type="button" onclick="feedback()" class="btn btn-primary">提交</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+    var feedback = function() {
+        $.ajax({
+            type: "POST",
+            url: "/light/feedback",
+            data: {
+                "content": $("#content").val(),
+                "contact": $("#contact").val()
+            },
+            success: function(msg){
+                $("#success").html("谢谢您的反馈，我们将尽快处理。").removeClass("hide");
+                $("#failure").addClass("hide");
+            },
+            error: function(){
+                $("#failure").html("非常抱歉，反馈失败，请稍候重试。").removeClass("hide");
+                $("#success").addClass("hide");
+            }
+        });
+    };
+</script>

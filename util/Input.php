@@ -19,8 +19,11 @@ class Input {
             return $default;
         }
         $value = $_REQUEST[$name];
-        if (is_null($pattern)) {
+        if (!empty($value) && is_null($pattern)) {
             return $value;
+        }
+        if (empty($value)) {
+            Slim::getInstance()->halt(400, "invalid parameter $name");
         }
         if (preg_match($pattern, $value, $matches)) {
             return $value;

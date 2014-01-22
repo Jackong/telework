@@ -14,7 +14,7 @@ Twig_Autoloader::register(true);
 
 $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig(),
-    'debug' => false,
+    'debug' => \glob\config\Sys::get('debug'),
     'templates.path' => PROJECT . '/tpl',
 ));
 
@@ -32,8 +32,12 @@ $app->error(function(Exception $e) use($app) {
 
 $view = $app->view();
 $view->parserOptions = array(
-    'debug' => false,
-    'cache' => '/home/bae/cache'
+    'charset' => 'utf-8',
+    'debug' => \glob\config\Sys::get('debug'),
+    'cache' => '/home/bae/cache',
+    'auto_reload' => true,
+    'strict_variables' => false,
+    'autoescape' => true
 );
 
 $view->parserExtensions = array(

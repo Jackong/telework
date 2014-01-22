@@ -13,6 +13,13 @@ class Sys extends Config{
     {
         return array(
             "salt" => "w#@!E!c#%@%&",
+            'debug' => false,
+        );
+    }
+
+    protected function dev() {
+        return array(
+            'debug' => true,
         );
     }
 

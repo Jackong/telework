@@ -19,7 +19,7 @@ class App {
     public function index() {
         Log::Trace($_SERVER["REMOTE_ADDR"], $_SERVER['HTTP_USER_AGENT']);
         $job = new Job();
-        $items = $job->gets(2, 10);
+        $items = $job->gets(2, 12);
         $categories = _37Signals::get('categories');
         foreach ($categories as $id => $category) {
             $categories[$id] = $category["lang"][1];

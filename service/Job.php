@@ -21,6 +21,8 @@ class Job {
                 "title" => true,
                 "description" => true,
                 "pubTime" => true,
+                "link" => true,
+                "img" => true,
                 "id" => true,
             )
         )->sort(array("pubTime" => -1));
@@ -29,9 +31,9 @@ class Job {
         foreach ($cursor as $doc) {
             $count = count($items);
             $item["title"] = $doc["title"];
-            $item["description"] = $doc["description"] . "\n" . date("Y-m-d H:i", $doc["pubTime"]);
-            $item["url"] = "http://bcs.duapp.com/telework-jobs/${doc['id']}.html";
-            $item["picUrl"] = "/images/remote$count.jpeg";
+            $item["description"] = $doc["description"];
+            $item["url"] = $doc["link"];
+            $item["picUrl"] = isset($doc["img"]) ? $doc["img"] : "";
             $items[$doc["id"]] = $item;
             if ($count >= $num - 1) {
                 break;

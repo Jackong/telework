@@ -27,7 +27,7 @@ class Handler implements \service\crawler\Handler {
     private function collect($category, $items) {
         \util\Log::Trace($category, "the number of items are found", count($items));
         $jobs = \util\Mongo::job("jobs");
-        $jobList = array();
+        $count = 0;
         foreach ($items as $item) {
             if (!isset($item->guid) || !isset($item->title) || !isset($item->description)) {
                 \util\Log::Warning($category, "bad data for job", json_encode($item));
@@ -36,41 +36,47 @@ class Handler implements \service\crawler\Handler {
             $guid = (string) $item->guid;
             $title = (string) $item->title;
             $content = (string) $item->description;
+            $content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
             $link = (string) $item->link;
             $pubTime = strtotime((string) $item->pubDate);
             $description = $this->getDescription($content);
+            $img = $this->getImg($content);
             $id = md5($guid);
-            if (!is_null($jobs->findOne(array("id" => $id)))) {
-                continue;
-            }
-            $jobs->insert(
+            $jobs->update(
+                array(
+                'id' => $id,
+                ),
                 array(
                     "id" => $id,
                     "category" => $category,
                     "title" => $title,
-                    "description" => html_entity_decode($description, ENT_QUOTES, 'UTF-8'),
+                    "description" => $description,
                     "link" => $link,
+                    "img" => $img,
                     "pubTime" => $pubTime,
                     "time" => TIME,
+                ),
+                array(
+                    "upsert" => true
                 )
             );
-            $jobList[$id] = array(
-                "title" => $title,
-                "content" => $content,
-                "link" => $link,
-                "pubTime" => $pubTime,
-            );
+            $count++;
         }
-        $this->upload2Bcs($category, $jobList);
-        \util\Log::Trace($category, "the number of items are collected", count($jobList));
+        \util\Log::Trace($category, "the number of items are collected", $count);
     }
 
+    private function getImg($content) {
+        if (preg_match("/<img.+?src=\"(.+?)\"/", $content, $matches)) {
+            return $matches[1];
+        }
+        return "";
+    }
     private function getDescription($content) {
         $description = "";
         if (preg_match("/<div>(.+?)<\\/div>/", $content, $matches)) {
             $description = (preg_replace("/(<.+?>).+?(<\\/.+?>)/", "", $matches[1])) . "\n";
         }
-        return $description;
+        return html_entity_decode($description, ENT_QUOTES, 'UTF-8');
     }
 
     private function upload2Bcs($category, $jobs) {

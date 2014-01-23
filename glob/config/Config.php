@@ -12,7 +12,7 @@ abstract class Config {
     protected abstract function prod();
 
     protected function dev() {
-        return array();
+        return $this->prod();
     }
 
     /**

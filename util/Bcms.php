@@ -28,7 +28,7 @@ class Bcms {
 
     public static function mail($subject, $body, array $to, $from = "no-reply@telework.com") {
         $bcms = self::instance();
-        $ret = $bcms->mail(Service::get('bcms', 'queue', 'mail'), $body, $to, array(
+        $ret = $bcms->mail(Service::get('bcms', 'queues', 'mail'), $body, $to, array(
             \Bcms::MAIL_SUBJECT => $subject,
             \Bcms::FROM => $from,
         ));

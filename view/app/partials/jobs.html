@@ -1,0 +1,13 @@
+<div class="row text-center">
+    <a ng-repeat="job in jobs" href="{{job.url}}" target="_blank">
+        <div class="col-lg-4 col-md-12 hero-feature">
+            <div class="thumbnail">
+                <img ng-if="job.picUrl" ng-src="{{job.picUrl}}" alt="{{ job.title}}">
+                <div class="caption">
+                    <h3>{{job.title}}</h3>
+                    <p>{{job.source}} {{job.pubTime}}</p>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

@@ -34,7 +34,10 @@ class Job {
             $item["description"] = $doc["description"];
             $item["url"] = $doc["link"];
             $item["picUrl"] = isset($doc["img"]) ? $doc["img"] : "";
-            $items[$doc["id"]] = $item;
+            $item['id'] = $doc["id"];
+            $item['pubTime'] = date("Y-m-d H:i", $doc['pubTime']);
+            $item['source'] = 'weworkremotely.com';
+            $items[] = $item;
             if ($count >= $num - 1) {
                 break;
             }

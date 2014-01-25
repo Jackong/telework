@@ -14,13 +14,38 @@
     <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+    <link href="css/sidebar.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            background-color: #eee;
+        }
+    </style>
 </head>
 <body>
-    <ng-include src="'partials/menu.html'"></ng-include>
-    <ng-include src="'partials/modals.html'"></ng-include>
-    <div class="container">
-        <hr>
-        <div ng-view></div>
+    <div class="container" id="wrapper">
+        <ng-include src="'partials/sidebar.html'"></ng-include>
+        <ng-include src="'partials/modals.html'"></ng-include>
+        <div id="page-content-wrapper">
+            <div class="content-header">
+                <h2>
+                    <a id="categories-toggle" href="#/jobs" onclick="$('#wrapper').toggleClass('active');" class="glyphicon glyphicon-th-list">
+                        <i class="icon-reorder"></i>
+                    </a>
+                </h2>
+                <h2 class="pull-right">
+                    <a id="menu-toggle" href="#/jobs" class="glyphicon glyphicon-th-large" data-toggle="collapse" data-target=".navbar-menu-collapse">
+                        <i class="icon-reorder"></i>
+                    </a>
+                </h2>
+            </div>
+
+            <!-- Keep all page content within the page-content inset div! -->
+            <div class="page-content inset">
+                <div ng-view></div>
+            </div>
+        </div>
         <hr>
         <ng-include src="'partials/footer.html'"></ng-include>
     </div>

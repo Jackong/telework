@@ -124,6 +124,7 @@
 
 .inset {
   padding: 15px;
+  z-index: -1;
 }
 
 }

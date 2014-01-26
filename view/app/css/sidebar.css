@@ -82,7 +82,7 @@
     text-decoration: none;
 }
 
-#menu-toggle {
+.menu-toggle {
   display: none;
 }
 
@@ -112,9 +112,11 @@
   transition: all 0.4s ease 0s;
 }
 
-#menu-toggle {
+.menu-toggle {
   display: inline-block;
 }
+
+
 
 .inset {
   padding: 15px;

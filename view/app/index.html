@@ -28,19 +28,18 @@
         <ng-include src="'partials/sidebar.html'"></ng-include>
         <ng-include src="'partials/modals.html'"></ng-include>
         <div id="page-content-wrapper">
-            <div class="content-header">
-                <h2>
+            <div class="content-header navbar navbar-fixed-top navbar-default menu-toggle">
+                <h2 class="pull-left">
                     <a href="#/jobs" onclick="$('#wrapper').toggleClass('active');" class="menu-toggle glyphicon glyphicon-th-list">
-                        <i class="icon-reorder"></i>
                     </a>
                 </h2>
                 <h2 class="pull-right">
                     <a href="#/jobs" class="menu-toggle glyphicon glyphicon-th-large" data-toggle="collapse" data-target=".navbar-menu-collapse">
-                        <i class="icon-reorder"></i>
                     </a>
                 </h2>
             </div>
 
+            <hr class="menu-toggle">
             <!-- Keep all page content within the page-content inset div! -->
             <div class="page-content inset">
                 <div ng-view></div>

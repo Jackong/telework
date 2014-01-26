@@ -68,6 +68,9 @@
 .content-header {
   height: 65px;
   line-height: 65px;
+  position: fixed;
+  background-color: lightgray;
+  width: 100%;
 }
 
 .content-header h2 {

@@ -71,6 +71,7 @@
   position: fixed;
   background-color: lightgray;
   width: 100%;
+  z-index: 0;
 }
 
 .content-header h2 {
@@ -125,6 +126,7 @@
 .inset {
   padding: 15px;
   z-index: -1;
+  padding-top: 70px;
 }
 
 }

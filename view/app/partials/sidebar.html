@@ -28,11 +28,12 @@
             </div>
             <div class="form-group">
                 <select class="form-control" ng-model="subscribe.category" ng-options="cate.name for cate in categories">
+                    <option value="">--职位分类--</option>
                 </select>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" ng-click="subscribe.submit()" class="btn btn-primary">提交</button>
+            <button type="button" data-dismiss="modal" ng-click="subscribe.submit()" class="btn btn-primary">提交</button>
         </div>
     </dc-modal>
 
@@ -49,6 +50,7 @@
             </div>
             <div class="form-group">
                 <select class="form-control" ng-model="recruit.category" ng-options="cate.name for cate in categories">
+                    <option value="">--职位分类--</option>
                 </select>
             </div>
             <div class="form-group">
@@ -62,7 +64,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" ng-click="recruit.submit()" class="btn btn-primary">提交</button>
+            <button type="button" data-dismiss="modal" ng-click="recruit.submit()" class="btn btn-primary">提交</button>
         </div>
     </dc-modal>
 
@@ -76,7 +78,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" ng-click="feedback.submit()" class="btn btn-primary">提交</button>
+            <button type="button" ng-click="feedback.submit()" data-dismiss="modal" class="btn btn-primary">提交</button>
         </div>
     </dc-modal>
 

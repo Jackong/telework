@@ -13,41 +13,46 @@ angular.module('light.controllers', []).
             {id: 7, name: '客服支持'},
             {id: 4, name: '杂项'}
         ];
-    }]).
-    controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
+    }])
+    .controller('ViewCtrl', ['$scope', 'Tips', function($scope, Tips) {
+        $scope.$on('tips.display', function(event) {
+            $scope.tips = {
+                type: Tips.type,
+                msg: Tips.msg
+            };
+        });
+    }])
+    .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
         $('#wrapper').toggleClass('active');
         Jobs.query({categoryId: $routeParams.categoryId}, function(jobs) {
             $scope.jobs = jobs;
         });
     }])
-    .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', function($scope, $routeParams, Jobs, $resource) {
-
+    .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', 'Tips',
+        function($scope, $routeParams, Jobs, $resource, Tips) {
         $resource('light/confirm/:id/:email/:category')
-            .query(
-            {
+            .get({
                 id: $routeParams.id
                 , email: $routeParams.email
                 , category: $routeParams.category
             }
             ,function(data) {
                 if (data.code == 0) {
-                    $scope.success = data.msg;
+                    Tips.display('success', data.msg);
                 } else {
-                    $scope.warning = data.msg;
+                    Tips.display('warning', data.msg);
                 }
-            }
-        );
-        Jobs.query({categoryId: $routeParams.category}, function(jobs) {
-            $scope.jobs = jobs;
-        });
-
+                Jobs.query({categoryId: $routeParams.category}, function(jobs) {
+                    $scope.jobs = jobs;
+                });
+            });
     }])
     .controller('JobCtrl', ['$scope', 'Jobs', function($scope, Jobs) {
         Jobs.query({categoryId: 0}, function(jobs) {
             $scope.jobs = jobs;
         });
     }]).
-    controller('ModalCtrl', ['$scope', '$resource', function($scope, $resource) {
+    controller('ModalCtrl', ['$scope', '$resource', 'Tips', function($scope, $resource, Tips) {
         $scope.subscribe = {
             id: 'subscribe',
             label: '订阅职位',
@@ -57,9 +62,9 @@ angular.module('light.controllers', []).
                     category: this.category.id
                 }, function(data) {
                     if (data.code == 0) {
-                        $scope.subscribe.success = "提交成功，请查收邮件并确认你是邮箱的主人。";
+                        Tips.display('success', "提交成功，请查收邮件并确认你是邮箱的主人。");
                     } else {
-                        $scope.subscribe.warning = data.msg;
+                        Tips.display('warning', data.msg);
                     }
                 });
             }
@@ -86,7 +91,7 @@ angular.module('light.controllers', []).
                 $resource('light/feedback').save(
                     {contact: this.contact, content: this.content}
                     ,function(data) {
-                        $scope.feedback.success = "感谢反馈，我们会尽快处理。";
+                        Tips.display('success', '感谢反馈，我们会尽快处理。');
                     }
                 );
             }

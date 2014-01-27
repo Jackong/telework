@@ -13,5 +13,6 @@ angular.module('light', [
 config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {templateUrl: 'partials/jobs.html', controller: 'JobCtrl'});
     $routeProvider.when('/jobs/:categoryId', {templateUrl: 'partials/jobs.html', controller: 'CategoryCtrl'});
+    $routeProvider.when('/confirm/:id/:email/:category', {templateUrl: 'partials/jobs.html', controller: 'ConfirmCtrl'});
     $routeProvider.otherwise({redirectTo: '/'});
 }]);

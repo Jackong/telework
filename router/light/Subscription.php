@@ -46,7 +46,7 @@ class Subscription {
             <body>
             您好，您在<a href='http://telework.duapp.com/app/light'>自由人</a>上订阅了 '$name' 职位。<br>
             如有您需要的职位，我们将会第一时间通知你。请点击以下链接，确认激活订阅（如非本人操作，请匆点击）：<br>
-            <a href='http://telework.duapp.com/light/confirm/$id/$email/$category'>确认订阅</a>
+            <a href='http://telework.duapp.com/#/confirm/$id/$email/$category'>确认订阅</a>
             </body>
             </html>",
             array($email));

@@ -19,8 +19,30 @@ angular.module('light.controllers', []).
         Jobs.query({categoryId: $routeParams.categoryId}, function(jobs) {
             $scope.jobs = jobs;
         });
-    }]).
-    controller('JobCtrl', ['$scope', 'Jobs', function($scope, Jobs) {
+    }])
+    .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', function($scope, $routeParams, Jobs, $resource) {
+
+        $resource('light/confirm/:id/:email/:category')
+            .query(
+            {
+                id: $routeParams.id
+                , email: $routeParams.email
+                , category: $routeParams.category
+            }
+            ,function(data) {
+                if (data.code == 0) {
+                    $scope.success = data.msg;
+                } else {
+                    $scope.warning = data.msg;
+                }
+            }
+        );
+        Jobs.query({categoryId: $routeParams.category}, function(jobs) {
+            $scope.jobs = jobs;
+        });
+
+    }])
+    .controller('JobCtrl', ['$scope', 'Jobs', function($scope, Jobs) {
         Jobs.query({categoryId: 0}, function(jobs) {
             $scope.jobs = jobs;
         });

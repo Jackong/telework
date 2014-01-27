@@ -10,7 +10,7 @@ namespace router\light;
 
 use service\Job;
 use Slim\Slim;
-use util\Input;
+use util\Output;
 
 class Jobs {
 
@@ -19,7 +19,7 @@ class Jobs {
             $categoryId = 2;
         }
         $job = new Job();
-        echo json_encode($job->gets($categoryId, 10));
+        Output::set($job->gets($categoryId, 10));
     }
 }
 

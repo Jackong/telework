@@ -8,6 +8,6 @@
 namespace common;
 
 
-interface Formatter {
-    public function output($content);
+interface Parser {
+    public function parse($content);
 }

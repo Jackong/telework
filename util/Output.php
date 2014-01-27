@@ -1,0 +1,38 @@
+<?php
+/**
+ * User: daisy
+ * Date: 14-1-27
+ * Time: 下午3:20
+ */
+
+namespace util;
+
+class Output {
+    const CODE_OK = 0;
+    const CODE_FAILURE = 1;
+
+    private static $content = array();
+
+    public static function set(array $content, $replace = false) {
+        if ($replace) {
+           static::$content = $content;
+        } else {
+           static::$content = array_merge(static::$content, $content);
+        }
+    }
+
+    public static function ok() {
+        static::set(array('code' => self::CODE_OK));
+    }
+
+    public static function error($msg = null, $code = self::CODE_FAILURE) {
+        static::set(array('code' => $code));
+        if (!is_null($msg)) {
+            static::set(array('msg' => $msg));
+        }
+    }
+
+    public static function get() {
+        return static::$content;
+    }
+} 

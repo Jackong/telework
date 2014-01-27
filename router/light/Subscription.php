@@ -15,6 +15,7 @@ use Slim\Slim;
 use util\Bcms;
 use util\Encrypt;
 use util\Input;
+use util\Output;
 
 
 class Subscription {
@@ -26,7 +27,7 @@ class Subscription {
         $name = _37Signals::get('categories', $category, 'lang', 1);
 
         if (is_null($name)) {
-            echo json_encode(array('success' => false));
+            Output::error();
             return;
         }
 
@@ -50,9 +51,9 @@ class Subscription {
             </html>",
             array($email));
         if ($ok) {
-            echo json_encode(array("success" => true));
+            Output::ok();
         }else {
-            echo json_encode(array("success" => false));
+            Output::error();
         }
     }
 }

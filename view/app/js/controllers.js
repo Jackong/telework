@@ -35,7 +35,6 @@ angular.module('light.controllers', []).
                     category: this.category.id
                 }, function(data) {
                     if (data.code == 0) {
-                        var email = $scope.subscribe.email;
                         $scope.subscribe.success = "提交成功，请查收邮件并确认你是邮箱的主人。";
                     } else {
                         $scope.subscribe.warning = data.msg;
@@ -62,7 +61,12 @@ angular.module('light.controllers', []).
             id: 'feedback',
             label: '反馈',
             submit: function() {
-                $resource('light/feedback').save({contact: this.contact, content: this.content});
+                $resource('light/feedback').save(
+                    {contact: this.contact, content: this.content}
+                    ,function(data) {
+                        $scope.feedback.success = "感谢反馈，我们会尽快处理。";
+                    }
+                );
             }
         };
         $scope.about = {

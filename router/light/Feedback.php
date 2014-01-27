@@ -11,6 +11,7 @@ namespace router\light;
 use Slim\Slim;
 use util\Input;
 use util\Mongo;
+use util\Output;
 
 class Feedback {
     public function submit() {
@@ -20,6 +21,7 @@ class Feedback {
             'contact' => $contact,
             'content' => $content,
         ));
+        Output::ok();
     }
 }
 

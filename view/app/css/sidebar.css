@@ -69,9 +69,7 @@
   height: 65px;
   line-height: 65px;
   position: fixed;
-  background-color: lightgray;
   width: 100%;
-  z-index: 0;
 }
 
 .content-header h2 {
@@ -121,12 +119,15 @@
   display: inline-block;
 }
 
-
+.content-header {
+    background-color: lightgray;
+    z-index: 1;
+}
 
 .inset {
   padding: 15px;
-  z-index: -1;
   padding-top: 70px;
+  z-index: 0;
 }
 
 }

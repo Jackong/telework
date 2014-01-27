@@ -11,6 +11,7 @@ angular.module('light', [
   'light.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/jobs', {templateUrl: 'partials/jobs.html', controller: 'JobCtrl'});
-    $routeProvider.otherwise({redirectTo: '/jobs'});
+    $routeProvider.when('/', {templateUrl: 'partials/jobs.html', controller: 'JobCtrl'});
+    $routeProvider.when('/jobs/:categoryId', {templateUrl: 'partials/jobs.html', controller: 'CategoryCtrl'});
+    $routeProvider.otherwise({redirectTo: '/'});
 }]);

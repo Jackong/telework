@@ -27,7 +27,7 @@ class Subscription {
         $name = _37Signals::get('categories', $category, 'lang', 1);
 
         if (is_null($name)) {
-            Output::error();
+            Output::error("您提交的分类不存在。");
             return;
         }
 
@@ -53,7 +53,7 @@ class Subscription {
         if ($ok) {
             Output::ok();
         }else {
-            Output::error();
+            Output::error("服务器繁忙，请稍候重试。");
         }
     }
 }

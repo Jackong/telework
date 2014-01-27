@@ -21,11 +21,15 @@ class Output {
         }
     }
 
-    public static function ok() {
-        static::set(array('code' => self::CODE_OK));
+    public static function ok($msg = null) {
+        static::result($msg, self::CODE_OK);
     }
 
     public static function error($msg = null, $code = self::CODE_FAILURE) {
+        static::result($msg, $code);
+    }
+
+    private static function result($msg, $code) {
         static::set(array('code' => $code));
         if (!is_null($msg)) {
             static::set(array('msg' => $msg));

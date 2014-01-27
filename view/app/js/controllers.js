@@ -34,10 +34,11 @@ angular.module('light.controllers', []).
                     email: this.email,
                     category: this.category.id
                 }, function(data) {
-                    if (data.success) {
-                        alert("ok");
+                    if (data.code == 0) {
+                        var email = $scope.subscribe.email;
+                        $scope.subscribe.success = "提交成功，请查收邮件并确认你是邮箱的主人。";
                     } else {
-                        alert("not ok")
+                        $scope.subscribe.warning = data.msg;
                     }
                 });
             }

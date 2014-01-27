@@ -3,6 +3,17 @@
 /* Controllers */
 
 angular.module('light.controllers', []).
+    controller('SidebarCtrl', ['$scope', function($scope) {
+        $scope.categories = [
+            {id: 1, name: '设计师'},
+            {id: 2, name: '开发工程师'},
+            {id: 3, name: '商务师'},
+            {id: 5, name: '广告文字撰稿人'},
+            {id: 6, name: '系统管理员'},
+            {id: 7, name: '客服支持'},
+            {id: 4, name: '杂项'}
+        ];
+    }]).
     controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
         $('#wrapper').toggleClass('active');
         Jobs.query({categoryId: $routeParams.categoryId}, function(jobs) {
@@ -13,4 +24,52 @@ angular.module('light.controllers', []).
         Jobs.query({categoryId: 0}, function(jobs) {
             $scope.jobs = jobs;
         });
+    }]).
+    controller('ModalCtrl', ['$scope', '$resource', function($scope, $resource) {
+        $scope.subscribe = {
+            id: 'subscribe',
+            label: '订阅职位',
+            submit: function() {
+                $resource('light/subscription').save({
+                    email: this.email,
+                    category: this.category.id
+                }, function(data) {
+                    if (data.success) {
+                        alert("ok");
+                    } else {
+                        alert("not ok")
+                    }
+                });
+            }
+        };
+        $scope.recruit = {
+            id: 'recruit',
+            label: '发布职位',
+            submit: function() {
+                $resource('light/recruit').save({
+                    company: this.company,
+                    homepage: this.homepage,
+                    logo: this.logo,
+                    category: this.category.id,
+                    title: this.title,
+                    description: this.description,
+                    contact: this.contact
+                });
+            }
+        };
+        $scope.feedback = {
+            id: 'feedback',
+            label: '反馈',
+            submit: function() {
+                $resource('light/feedback').save({contact: this.contact, content: this.content});
+            }
+        };
+        $scope.about = {
+            id: 'about',
+            label: '关于'
+        };
+        $scope.donate = {
+            id: 'donate',
+            label: '捐助'
+        };
     }]);

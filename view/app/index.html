@@ -25,8 +25,9 @@
 </head>
 <body>
     <div class="container" id="wrapper">
-        <ng-include src="'partials/sidebar.html'"></ng-include>
-        <ng-include src="'partials/modals.html'"></ng-include>
+        <div ng-controller="SidebarCtrl">
+            <ng-include src="'partials/sidebar.html'"></ng-include>
+        </div>
         <div id="page-content-wrapper">
             <div class="content-header">
                 <h2 class="pull-left">

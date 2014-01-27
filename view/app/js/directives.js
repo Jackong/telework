@@ -4,8 +4,13 @@
 
 
 angular.module('light.directives', []).
-  directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }]);
+    directive('dcModal', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                info: '='
+            },
+            transclude:true,
+            templateUrl: 'partials/modal.html'
+        };
+    });

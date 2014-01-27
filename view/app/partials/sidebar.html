@@ -1,33 +1,93 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-        <li class="sidebar-brand"><a href="#">最新招聘</a>
+        <li class="sidebar-brand"><a href="#/jobs/0">最新招聘</a>
         </li>
-        <li><a href="#/jobs/1">设计师</a>
-        </li>
-        <li><a href="#/jobs/2">开发工程师</a>
-        </li>
-        <li><a href="#/jobs/3">商务师</a>
-        </li>
-        <li><a href="#/jobs/5">广告文字撰稿人</a>
-        </li>
-        <li><a href="#/jobs/6">系统管理员</a>
-        </li>
-        <li><a href="#/jobs/7">客服支持</a>
-        </li>
-        <li><a href="#/jobs/4">杂项</a>
+        <li ng-repeat="category in categories"><a href="#/jobs/{{category.id}}">{{category.name}}</a>
         </li>
     </ul>
 </div>
 
-<nav class="navbar-fixed-bottom navbar-inverse" role="navigation">
-    <div class="collapse navbar-collapse navbar-menu-collapse">
-        <ul class="nav navbar-nav">
-            <li><a href="#/" data-toggle="modal" data-target="#subscribe">订阅职位</a></li>
-            <li><a href="#/" data-toggle="modal" data-target="#recruit">发布职位</a></li>
-            <li><a href="#/" data-toggle="modal" data-target="#feedback" data-keyboard="true">反馈</a></li>
-            <li><a href="#/" data-toggle="modal" data-target="#about">关于</a></li>
-            <li><a href="#/">捐助</a></li>
-        </ul>
-    </div><!-- /.navbar-collapse -->
-</nav>
+<div ng-controller="ModalCtrl">
+    <nav class="navbar-fixed-bottom navbar-inverse" role="navigation">
+        <div class="collapse navbar-collapse navbar-menu-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="" data-toggle="modal" data-target="#{{subscribe.id}}">{{subscribe.label}}</a></li>
+                <li><a href="" data-toggle="modal" data-target="#{{recruit.id}}">{{recruit.label}}</a></li>
+                <li><a href="" data-toggle="modal" data-target="#{{feedback.id}}">{{feedback.label}}</a></li>
+                <li><a href="" data-toggle="modal" data-target="#{{about.id}}">{{about.label}}</a></li>
+                <li><a href="" data-toggle="modal" data-target="#{{donate.id}}">{{donate.label}}</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <dc-modal info="subscribe">
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="email" ng-model="subscribe.email" class="form-control" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="subscribe.category" ng-options="cate.name for cate in categories">
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="subscribe.submit()" class="btn btn-primary">提交</button>
+        </div>
+    </dc-modal>
+
+    <dc-modal info="recruit">
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" ng-model="recruit.company" class="form-control" placeholder="公司或团队名称">
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="recruit.homepage" class="form-control" placeholder="主页">
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="recruit.logo" class="form-control" placeholder="LOGO（选填）">
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="recruit.category" ng-options="cate.name for cate in categories">
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="recruit.title" class="form-control" placeholder="职位名称">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" ng-model="recruit.description" rows="4" placeholder="职位描述"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="recruit.contact" class="form-control" placeholder="投递简历联系方式">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="recruit.submit()" class="btn btn-primary">提交</button>
+        </div>
+    </dc-modal>
+
+    <dc-modal info="feedback">
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" ng-model="feedback.contact" class="form-control" placeholder="联系方式（选填，Email，手机号码或QQ）">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" ng-model="feedback.content" rows="3" placeholder="我们的进步需要您的宝贵建议和意见。"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="feedback.submit()" class="btn btn-primary">提交</button>
+        </div>
+    </dc-modal>
+
+    <dc-modal info="about">
+        <div class="modal-body">
+            本App为国内首个专注于提供远程办公求职招聘服务的平台，愿求职者找到满意工作，愿招聘者找到合意人才。
+            我们希望能够推动国内远程办公的发展，为大家谋福。
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-link" href="mailto:JackongC@gmail.com">联系我们</a>
+        </div>
+    </dc-modal>
+</div>
+

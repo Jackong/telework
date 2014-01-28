@@ -13,7 +13,7 @@ use common\Parser;
 class Xml implements Parser {
     public function encode($content)
     {
-        echo $content;
+        echo $content['data'];
     }
 
     public function decode($content)

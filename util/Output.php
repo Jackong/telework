@@ -17,7 +17,10 @@ class Output {
         if ($replace) {
            static::$content = $content;
         } else {
-           static::$content = array_merge(static::$content, $content);
+            if (!is_array($content)) {
+                $content = array('data' => $content);
+            }
+            static::$content = array_merge(static::$content, $content);
         }
     }
 

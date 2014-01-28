@@ -38,23 +38,24 @@ class Entry {
     }
 
     public function interact() {
-        $myId = Input::get('ToUserName', "/^(" . Handler::MYID .")$/");
-        $type = Input::get('MsgType');
-        if ($myId != Handler::MYID) {
-            Log::Warning($myId, Handler::MYID, $type);
-            return;
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        Log::Trace(Slim::getInstance()->request()->getMediaType(), $postStr);
+        //extract post data
+        if (!empty($postStr)){
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            if (!isset($postObj->ToUserName) || $postObj->ToUserName != Handler::MYID) {
+                return;
+            }
+            $hndName = "\\service\\wechat\\telework\\" . ucfirst($postObj->MsgType);
+            /**
+             * @var $handler \service\wechat\Handler
+             */
+            $handler = new $hndName();
+            if ($handler->needCheck() && !$this->checkSign()) {
+                return;
+            }
+            Output::set($handler->handle($postObj));
         }
-
-        $hndName = "\\service\\wechat\\telework\\" . ucfirst($type);
-        /**
-         * @var $handler \service\wechat\Handler
-         */
-        $handler = new $hndName();
-        if ($handler->needCheck() && !$this->checkSign()) {
-            return;
-        }
-        $env = Slim::getInstance()->environment();
-        Output::set($handler->handle($env['slim.input']));
     }
 
 }

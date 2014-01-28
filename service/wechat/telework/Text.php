@@ -12,7 +12,6 @@ use glob\config\source\_37Signals;
 use service\Job;
 use service\User;
 use service\wechat\Handler;
-use util\Input;
 use util\Log;
 
 class Text extends Handler {
@@ -26,9 +25,9 @@ class Text extends Handler {
         $this->user = new User();
     }
 
-    public function handle() {
-        $userId = Input::get('FromUserName');
-        $content = Input::get('Content');
+    public function handle(\SimpleXMLElement $subject) {
+        $userId = $subject->FromUserName;
+        $content = $subject->Content;
         $category = $this->getCategory(trim($content));
         if (0 == $category) {
             Log::Notice($userId, "feedback", $content);

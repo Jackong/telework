@@ -11,11 +11,14 @@ namespace common\parser;
 use common\Parser;
 
 class Json implements Parser{
-    public function parse($content) {
+    public function encode($content) {
         if (!is_array($content) && !is_object($content)) {
             $content = array('data' => $content);
         }
         return json_encode($content);
     }
 
+    public function decode($content) {
+
+    }
 } 

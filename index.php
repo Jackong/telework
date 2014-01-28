@@ -19,6 +19,12 @@ $app->add(new \common\middleware\Response(
         'application/json' => function() {
             return new \common\parser\Json();
         },
+        'text/html' => function() {
+            return new \common\parser\Text();
+        },
+        'text/xml' => function() {
+            return new \common\parser\Xml();
+        }
     )
 ));
 

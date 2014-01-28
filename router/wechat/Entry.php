@@ -12,13 +12,14 @@ use service\wechat\Handler;
 use Slim\Slim;
 use util\Input;
 use util\Log;
+use util\Output;
 
 class Entry {
     const TOKEN = "RemoteWork";
 
     public function check() {
         if ($this->checkSign()) {
-            echo Input::get("echostr");
+            Output::set(Input::get("echostr"));
         }
     }
 
@@ -53,7 +54,7 @@ class Entry {
             if ($handler->needCheck() && !$this->checkSign()) {
                 return;
             }
-            echo $handler->handle($postObj);
+            Output::set($handler->handle($postObj));
         }
     }
 

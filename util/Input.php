@@ -13,14 +13,18 @@ class Input {
 
     public static function get($name, $pattern = null, $default = null) {
         $app = Slim::getInstance();
-        $request = array_merge($_REQUEST, json_decode($app->request()->getBody(), true));
-        if (!isset($request[$name])) {
+        if (isset($_REQUEST[$name])) {
+            $value = $_REQUEST[$name];
+        } else {
+            $request = json_decode($app->request()->getBody(), true);
+            $value = isset($request[$name]) ? $request[$name] : null;
+        }
+        if (is_null($value)) {
             if (is_null($default)) {
                 static::invalid($app, $name);
             }
             return $default;
         }
-        $value = $request[$name];
         if (!empty($value) && is_null($pattern)) {
             return $value;
         }

@@ -44,7 +44,7 @@ class Response extends Middleware {
         $mediaType = $app->request()->getMediaType();
         $response = $app->response();
         $parser = $this->parser($mediaType);
-        $response->setBody($parser->parse(Output::get()));
+        $response->setBody($parser->encode(Output::get()));
         $response->header("Content-Type", $mediaType);
     }
 

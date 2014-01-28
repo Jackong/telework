@@ -13,7 +13,7 @@ class Output {
 
     private static $content = array();
 
-    public static function set(array $content, $replace = false) {
+    public static function set($content, $replace = false) {
         if ($replace) {
            static::$content = $content;
         } else {

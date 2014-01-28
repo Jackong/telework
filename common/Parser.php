@@ -9,5 +9,6 @@ namespace common;
 
 
 interface Parser {
-    public function parse($content);
+    public function encode($content);
+    public function decode($content);
 }

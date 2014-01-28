@@ -16,7 +16,8 @@ class Input {
         if (isset($_REQUEST[$name])) {
             $value = $_REQUEST[$name];
         } else {
-            $request = json_decode($app->request()->getBody(), true);
+            $env = $app->environment();
+            $request = $env['slim.input'];
             $value = isset($request[$name]) ? $request[$name] : null;
         }
         if (is_null($value)) {

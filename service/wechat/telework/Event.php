@@ -11,6 +11,7 @@ namespace service\wechat\telework;
 use glob\Job;
 use service\User;
 use service\wechat\Handler;
+use util\Input;
 
 class Event extends Handler {
     private $user;
@@ -20,9 +21,9 @@ class Event extends Handler {
     }
 
 
-    public function handle(\SimpleXMLElement $subject) {
-        $fromUserName = $subject->FromUserName;
-        $event = (string)$subject->Event;
+    public function handle() {
+        $fromUserName = Input::get('FromUserName');
+        $event = Input::get('Event');
         if (!method_exists($this->user, $event)) {
             return null;
         }

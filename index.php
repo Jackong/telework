@@ -11,6 +11,7 @@ $app = new \Slim\Slim(array(
     'debug' => \glob\config\Sys::get('debug'),
 ));
 
+$app->add(new \Slim\Middleware\ContentTypes());
 $app->add(new \common\middleware\Response(
     function() {
         return new \common\parser\Json();

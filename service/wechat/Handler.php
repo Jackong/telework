@@ -12,7 +12,7 @@ namespace service\wechat;
 abstract class Handler {
     const MYID = "gh_299b93ffdf95";
 
-    public abstract function handle(\SimpleXMLElement $subject);
+    public abstract function handle();
 
     public function needCheck() {
         return false;

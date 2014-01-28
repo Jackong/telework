@@ -8,6 +8,7 @@
 namespace router\light;
 
 
+use glob\config\source\_37Signals;
 use service\Job;
 use Slim\Slim;
 use util\Output;
@@ -19,7 +20,11 @@ class Jobs {
             $categoryId = 2;
         }
         $job = new Job();
-        Output::set($job->gets($categoryId, 10));
+        Output::set(
+            array(
+                'jobs' => $job->gets($categoryId, 10),
+            ));
+        Output::ok();
     }
 }
 

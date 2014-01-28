@@ -3,16 +3,10 @@
 /* Controllers */
 
 angular.module('light.controllers', []).
-    controller('SidebarCtrl', ['$scope', function($scope) {
-        $scope.categories = [
-            {id: 1, name: '设计师'},
-            {id: 2, name: '开发工程师'},
-            {id: 3, name: '商务师'},
-            {id: 5, name: '广告文字撰稿人'},
-            {id: 6, name: '系统管理员'},
-            {id: 7, name: '客服支持'},
-            {id: 4, name: '杂项'}
-        ];
+    controller('SidebarCtrl', ['$scope', '$resource', function($scope, $resource) {
+        $resource('light/categories').get({}, function(data){
+            $scope.categories = data.categories;
+        });
     }])
     .controller('ViewCtrl', ['$scope', 'Tips', function($scope, Tips) {
         $scope.$on('tips.display', function(event) {
@@ -24,8 +18,8 @@ angular.module('light.controllers', []).
     }])
     .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
         $('#wrapper').toggleClass('active');
-        Jobs.query({categoryId: $routeParams.categoryId}, function(jobs) {
-            $scope.jobs = jobs;
+        Jobs.get({categoryId: $routeParams.categoryId}, function(data) {
+            $scope.jobs = data.jobs;
         });
     }])
     .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', 'Tips',
@@ -42,14 +36,14 @@ angular.module('light.controllers', []).
                 } else {
                     Tips.display('warning', data.msg);
                 }
-                Jobs.query({categoryId: $routeParams.category}, function(jobs) {
-                    $scope.jobs = jobs;
+                Jobs.get({categoryId: $routeParams.category}, function(data) {
+                    $scope.jobs = data.jobs;
                 });
             });
     }])
     .controller('JobCtrl', ['$scope', 'Jobs', function($scope, Jobs) {
-        Jobs.query({categoryId: 0}, function(jobs) {
-            $scope.jobs = jobs;
+        Jobs.get({categoryId: 0}, function(data) {
+            $scope.jobs = data.jobs;
         });
     }]).
     controller('ModalCtrl', ['$scope', '$resource', 'Tips', function($scope, $resource, Tips) {

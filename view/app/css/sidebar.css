@@ -68,7 +68,6 @@
 .content-header {
   height: 65px;
   line-height: 65px;
-  position: fixed;
   width: 100%;
 }
 
@@ -121,7 +120,13 @@
 
 .content-header {
     background-color: lightgray;
-    z-index: 1;
+    z-index: 500;
+    position: fixed;
+    left: 0;
+}
+
+#wrapper.active .content-header {
+    left: 250px;
 }
 
 .inset {

@@ -25,17 +25,4 @@ class Bcms {
         static::$bcms = new \Bcms($config["accessKey"], $config["secretKey"], $config['host']);
         return static::$bcms;
     }
-
-    public static function mail($subject, $body, array $to, $from = "no-reply@telework.com") {
-        $bcms = self::instance();
-        $ret = $bcms->mail(Service::get('bcms', 'queues', 'mail'), $body, $to, array(
-            \Bcms::MAIL_SUBJECT => $subject,
-            \Bcms::FROM => $from,
-        ));
-        if ($ret === false) {
-            Log::Warning($bcms->getRequestId(), $bcms->errno(), $bcms->errmsg());
-            return false;
-        }
-        return true;
-    }
-} 
+}

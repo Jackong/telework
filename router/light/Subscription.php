@@ -15,6 +15,7 @@ use Slim\Slim;
 use util\Bcms;
 use util\Encrypt;
 use util\Input;
+use util\Mail;
 use util\Output;
 
 
@@ -35,9 +36,7 @@ class Subscription {
         $user->subscribe(strtolower($email), "email");
 
         $id = Encrypt::encrypt($email, Sys::get('salt'));
-        $ok = Bcms::mail(
-            "自由人远程职位订阅确认",
-            "<!--HTML-->
+        $ok = Mail::confirm("<!--HTML-->
             <!doctype html>
             <html>
             <head>
@@ -48,8 +47,7 @@ class Subscription {
             如有您需要的职位，我们将会第一时间通知你。请点击以下链接，确认激活订阅（如非本人操作，请匆点击）：<br>
             <a href='http://telework.duapp.com/#/confirm/$id/$email/$category'>确认订阅</a>
             </body>
-            </html>",
-            array($email));
+            </html>", array($email));
         if ($ok) {
             Output::ok();
         }else {

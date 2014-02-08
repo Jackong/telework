@@ -32,6 +32,7 @@ abstract class Config {
         $appId = getenv('BAE_ENV_APPID');
         if (empty($appId) && !defined('BAE_ENV_APPID')) {
             $dev = static::instance()->dev();
+            $dev = array_merge($prod, $dev);
             $value = static::load($dev, $keys);
             if (!is_null($value)) {
                 return $value;

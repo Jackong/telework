@@ -28,14 +28,15 @@ class Service extends Config {
                 'accessKey' => '10df3b0a61aea4d138a4d248ce4dc7e2',
                 'secretKey' => '7fc401c7800a5e78868d1f014b4ec30b',
                 'queues' => array(
-                    'mail' => '28941cc23c87d58359a71f8f07da3faa',
+                    'confirm' => '362842fd51366804a4e8559469f967dd',
+                    'subscription' => 'bb382ea44e288fea5d8743dc95dcbf9f',
                 )
             )
         );
     }
 
     protected function dev() {
-        $dev = array(
+        return array(
             "mongo" => array(
                 "user" => array(
                     'dbname' => 'user',
@@ -49,9 +50,5 @@ class Service extends Config {
                 ),
             ),
         );
-
-        $prod = $this->prod();
-        $prod['mongo'] = $dev['mongo'];
-        return $prod;
     }
 }

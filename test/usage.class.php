@@ -26,5 +26,15 @@ class Usage extends \PHPUnit_Framework_TestCase {
         $service = Service::get();
         $this->assertTrue(is_array($service));
     }
+
+    public function testArrayMerge() {
+        $arr1 = array('a' => 2, 'b' => 'cc', 'c' => array('xx'));
+        $arr2 = array('a' => 'ww', 'b' => 24, 'c' => array('oo', 'dd'), 'd' => 'haha');
+        var_export(array_merge($arr1, $arr2));
+        var_export(array_merge_recursive($arr1, $arr2));
+        var_export($arr1 + $arr2);
+    }
+
+
 }
  

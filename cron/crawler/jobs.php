@@ -39,7 +39,6 @@ class Handler implements \service\crawler\Handler {
             $content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
             $link = (string) $item->link;
             $pubTime = strtotime((string) $item->pubDate);
-            $description = $this->getDescription($content);
             $img = $this->getImg($content);
             $id = md5($guid);
             $jobs->update(
@@ -50,7 +49,7 @@ class Handler implements \service\crawler\Handler {
                     "id" => $id,
                     "category" => $category,
                     "title" => $title,
-                    "description" => $description,
+                    "content" => $content,
                     "link" => $link,
                     "img" => $img,
                     "pubTime" => $pubTime,
@@ -70,13 +69,6 @@ class Handler implements \service\crawler\Handler {
             return $matches[1];
         }
         return "";
-    }
-    private function getDescription($content) {
-        $description = "";
-        if (preg_match("/<div>(.+?)<\\/div>/", $content, $matches)) {
-            $description = (preg_replace("/(<.+?>).+?(<\\/.+?>)/", "", $matches[1])) . "\n";
-        }
-        return html_entity_decode($description, ENT_QUOTES, 'UTF-8');
     }
 
     private function upload2Bcs($category, $jobs) {

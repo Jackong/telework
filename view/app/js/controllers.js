@@ -17,7 +17,9 @@ angular.module('light.controllers', []).
         });
     }])
     .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
-        $('#wrapper').toggleClass('active');
+        if ($routeParams.categoryId) {
+            $('#wrapper').toggleClass('active');
+        }
         Jobs.get({categoryId: $routeParams.categoryId}, function(data) {
             $scope.jobs = data.jobs;
         });
@@ -41,10 +43,16 @@ angular.module('light.controllers', []).
                 });
             });
     }])
-    .controller('JobCtrl', ['$scope', 'Jobs', function($scope, Jobs) {
-        Jobs.get({categoryId: 0}, function(data) {
-            $scope.jobs = data.jobs;
-        });
+    .controller('JobCtrl', ['$scope', '$routeParams', '$resource', function($scope, $routeParams, $resource) {
+        $resource('light/jobs/:category/:id')
+            .get({
+                category:0,
+                id: $routeParams.id
+            }
+            ,function(data) {
+                $scope.job = data.job;
+            }
+        );
     }]).
     controller('ModalCtrl', ['$scope', '$resource', 'Tips', function($scope, $resource, Tips) {
         $scope.subscribe = {
@@ -56,7 +64,7 @@ angular.module('light.controllers', []).
                     category: this.category.id
                 }, function(data) {
                     if (data.code == 0) {
-                        Tips.display('success', "提交成功，请查收邮件并确认你是邮箱的主人。");
+                        Tips.display('success', "提交成功，请<a href='mailto:" + this.email + "'>查收邮件</a>并确认你是邮箱的主人。");
                     } else {
                         Tips.display('warning', data.msg);
                     }

@@ -19,22 +19,22 @@ class Job {
             ),
             array(
                 "title" => true,
-                "description" => true,
+                "content" => true,
                 "pubTime" => true,
                 "link" => true,
                 "img" => true,
                 "id" => true,
             )
         )->sort(array("pubTime" => -1));
-
         $items = array();
         foreach ($cursor as $doc) {
+            $id = $doc['id'];
             $count = count($items);
             $item["title"] = $doc["title"];
-            $item["description"] = $doc["description"];
-            $item["url"] = $doc["link"];
+            $item["content"] = $doc["content"];
+            $item["url"] = "http://telework.duapp.com/#/jobs/$category/$id";
             $item["picUrl"] = isset($doc["img"]) ? $doc["img"] : "";
-            $item['id'] = $doc["id"];
+            $item['id'] = $id;
             $item['pubTime'] = date("Y-m-d H:i", $doc['pubTime']);
             $item['source'] = 'weworkremotely.com';
             $items[] = $item;
@@ -43,5 +43,16 @@ class Job {
             }
         }
         return $items;
+    }
+
+    public function get($id) {
+        $jobs = Mongo::job('jobs');
+        return $jobs->findOne(
+            array('id' => $id),
+            array(
+                'title' => true,
+                'content' => true,
+            )
+        );
     }
 } 

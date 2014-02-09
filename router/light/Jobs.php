@@ -11,11 +11,12 @@ namespace router\light;
 use glob\config\source\_37Signals;
 use service\Job;
 use Slim\Slim;
+use util\Log;
 use util\Output;
 
 class Jobs {
 
-    public function jobs($categoryId) {
+    public function jobs($categoryId = 0) {
         if ($categoryId == 0) {
             $categoryId = 2;
         }
@@ -26,8 +27,26 @@ class Jobs {
             ));
         Output::ok();
     }
+
+    public function job($category, $id) {
+        $job = new Job();
+        Output::set(
+            array(
+                'job' => $job->get($id)
+            )
+        );
+        Output::ok();
+    }
 }
 
 Slim::getInstance()
     ->get('/jobs/:categoryId', array(new Jobs(), 'jobs'))
     ->conditions(array('categoryId' => '[0-9]{1,5}'));
+Slim::getInstance()
+    ->get('/jobs', array(new Jobs(), 'jobs'));
+Slim::getInstance()
+    ->get('/jobs/:category/:id', array(new Jobs(), 'job'))
+    ->conditions(array(
+        'category' => '[0=9]{1,5}',
+        'id' => '[0-9a-f]{32}'
+    ));

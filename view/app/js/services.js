@@ -9,13 +9,13 @@ angular.module('light.services', [])
     .factory('Jobs', ['$resource', function($resource) {
         return $resource('light/jobs/:categoryId');
     }])
-    .service('Tips', ['$rootScope', function($rootScope) {
+    .service('Tips', ['$rootScope', '$sce', function($rootScope, $sce) {
         return {
             type: '',
             msg: '',
             display: function(type, msg) {
                 this.type = type;
-                this.msg = msg;
+                this.msg = $sce.trustAsHtml(msg);
                 $rootScope.$broadcast('tips.display');
             }
         };

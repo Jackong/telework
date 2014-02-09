@@ -5,14 +5,16 @@
 angular.module('light', [
   'ngRoute',
   'ngResource',
+  'ngSanitize',
   'light.filters',
   'light.services',
   'light.directives',
   'light.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/', {templateUrl: 'partials/jobs.html', controller: 'JobCtrl'});
-    $routeProvider.when('/jobs/:categoryId', {templateUrl: 'partials/jobs.html', controller: 'CategoryCtrl'});
-    $routeProvider.when('/confirm/:id/:email/:category', {templateUrl: 'partials/jobs.html', controller: 'ConfirmCtrl'});
-    $routeProvider.otherwise({redirectTo: '/'});
+    $routeProvider.when('/jobs', {templateUrl: 'partials/jobs.html', controller: 'CategoryCtrl'})
+        .when('/jobs/:categoryId', {templateUrl: 'partials/jobs.html', controller: 'CategoryCtrl'})
+        .when('/job/:id', {templateUrl: 'partials/job.html', controller: 'JobCtrl'})
+        .when('/confirm/:id/:email/:category', {templateUrl: 'partials/jobs.html', controller: 'ConfirmCtrl'})
+        .otherwise({redirectTo: '/jobs'});
 }]);

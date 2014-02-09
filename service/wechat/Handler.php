@@ -48,7 +48,7 @@ abstract class Handler {
                         <Url><![CDATA[%s]]></Url>
                     </item>";
         foreach ($items as $item) {
-            $articles .= sprintf($itemTpl, $item["title"], $item["description"], $item["picUrl"], $item["url"]);
+            $articles .= sprintf($itemTpl, $item["title"], $item["content"], $item["picUrl"], $item["url"]);
         }
 
         return sprintf($tpl, $userId, self::MYID, TIME, count($items), $articles);

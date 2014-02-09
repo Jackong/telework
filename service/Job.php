@@ -19,7 +19,6 @@ class Job {
             ),
             array(
                 "title" => true,
-                "content" => true,
                 "pubTime" => true,
                 "link" => true,
                 "img" => true,
@@ -31,7 +30,6 @@ class Job {
             $id = $doc['id'];
             $count = count($items);
             $item["title"] = $doc["title"];
-            $item["content"] = $doc["content"];
             $item["url"] = "http://telework.duapp.com/#/jobs/$category/$id";
             $item["picUrl"] = isset($doc["img"]) ? $doc["img"] : "";
             $item['id'] = $id;
@@ -52,6 +50,7 @@ class Job {
             array(
                 'title' => true,
                 'content' => true,
+                'pubTime' => true,
             )
         );
     }

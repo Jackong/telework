@@ -17,6 +17,44 @@ angular.module('light.services', [])
                 this.type = type;
                 this.msg = msg;
                 $rootScope.$broadcast('tips.display');
+            },
+            handle: function(data, tips) {
+                if (!data.msg) {
+                    if (data.code == 0) {
+                        return true;
+                    }
+                    data.msg = '服务器繁忙，请稍后重试。';
+                }
+                var ok = false;
+                switch (data.code) {
+                    case 0: tips.type = 'success';
+                        ok = true;
+                        break;
+                    case 1: tips.type = 'info';
+                        break;
+                    case 2: tips.type = 'warning';
+                        break;
+                    case 3: tips.type = 'danger';
+                        break;
+                    default : tips.type = 'success';
+                }
+                tips.msg = data.msg;
+                $rootScope.$broadcast('tips.display');
+                return ok;
+            },
+            callback: function(callback) {
+                var tips = this;
+                return function(data) {
+                    if (tips.handle(data, tips)) {
+                        if (callback.success) {
+                            callback.success(data);
+                        }
+                    } else {
+                        if (callback.failure) {
+                            callback.failure(data);
+                        }
+                    }
+                };
             }
         };
     }])

@@ -16,7 +16,7 @@ use util\Output;
 
 class Jobs {
 
-    public function jobs($categoryId = 0) {
+    public function jobs($categoryId) {
         if ($categoryId == 0) {
             $categoryId = 2;
         }
@@ -30,9 +30,14 @@ class Jobs {
 
     public function job($category, $id) {
         $job = new Job();
+        $item = $job->get($id);
+        if (is_null($item)) {
+            Output::warning('该信息已过期');
+            return;
+        }
         Output::set(
             array(
-                'job' => $job->get($id)
+                'job' => $item,
             )
         );
         Output::ok();
@@ -43,10 +48,8 @@ Slim::getInstance()
     ->get('/jobs/:categoryId', array(new Jobs(), 'jobs'))
     ->conditions(array('categoryId' => '[0-9]{1,5}'));
 Slim::getInstance()
-    ->get('/jobs', array(new Jobs(), 'jobs'));
-Slim::getInstance()
     ->get('/jobs/:category/:id', array(new Jobs(), 'job'))
     ->conditions(array(
-        'category' => '[0=9]{1,5}',
+        'category' => '[0-9]{1,5}',
         'id' => '[0-9a-f]{32}'
     ));

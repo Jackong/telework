@@ -18,42 +18,45 @@ angular.module('light.controllers', []).
         });
     }])
     .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', 'Category', function($scope, $routeParams, Jobs, Category) {
-        if ($routeParams.categoryId) {
-            Category.selected($routeParams.categoryId);
+        $scope.category = 0;
+        if ($routeParams.categoryId != 0) {
+            $scope.category = $routeParams.categoryId;
+            Category.selected($scope.category);
             $('#wrapper').toggleClass('active');
         }
-        Jobs.get({categoryId: $routeParams.categoryId}, function(data) {
+        Jobs.get({categoryId: $scope.category}, function(data) {
             $scope.jobs = data.jobs;
         });
     }])
-    .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', 'Tips',
-        function($scope, $routeParams, Jobs, $resource, Tips) {
-        $resource('light/confirm/:id/:email/:category')
-            .get({
-                id: $routeParams.id
-                , email: $routeParams.email
-                , category: $routeParams.category
-            }
-            ,function(data) {
-                if (data.code == 0) {
-                    Tips.display('success', data.msg);
-                } else {
-                    Tips.display('warning', data.msg);
+    .controller('ConfirmCtrl', ['$scope', '$routeParams', 'Jobs', '$resource', 'Tips', 'Category',
+        function($scope, $routeParams, Jobs, $resource, Tips, Category) {
+            Category.selected($routeParams.category);
+            $resource('light/confirm/:id/:email/:category')
+                .get({
+                    id: $routeParams.id
+                    , email: $routeParams.email
+                    , category: $routeParams.category
                 }
-                Jobs.get({categoryId: $routeParams.category}, function(data) {
-                    $scope.jobs = data.jobs;
+                ,function(data) {
+                    if (data.code == 0) {
+                        Tips.display('success', data.msg);
+                    } else {
+                        Tips.display('warning', data.msg);
+                    }
+                    Jobs.get({categoryId: $routeParams.category}, function(data) {
+                        $scope.jobs = data.jobs;
+                    });
                 });
-            });
     }])
-    .controller('JobCtrl', ['$scope', '$routeParams', '$resource', function($scope, $routeParams, $resource) {
+    .controller('JobCtrl', ['$scope', '$routeParams', '$resource', 'Tips', function($scope, $routeParams, $resource, Tips) {
         $resource('light/jobs/:category/:id')
             .get({
-                category:0,
+                category: $routeParams.category,
                 id: $routeParams.id
             }
-            ,function(data) {
+            ,Tips.callback({success: function(data) {
                 $scope.job = data.job;
-            }
+            }})
         );
     }]).
     controller('ModalCtrl', ['$scope', '$resource', 'Tips', 'Category', function($scope, $resource, Tips, Category) {

@@ -45,7 +45,11 @@
 
             <!-- Keep all page content within the page-content inset div! -->
             <div class="page-content inset" ng-controller="ViewCtrl">
-                <div ng-view></div>
+                <div ng-if="tips.type" class="alert alert-{{tips.type}} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <span ng-bind-html="tips.msg"></span>
+                </div>
+                <div class="row text-center" ng-view></div>
             </div>
         </div>
         <hr>

@@ -3,9 +3,10 @@
 /* Controllers */
 
 angular.module('light.controllers', []).
-    controller('SidebarCtrl', ['$scope', '$resource', function($scope, $resource) {
+    controller('SidebarCtrl', ['$scope', '$resource', 'Category', function($scope, $resource, Category) {
         $resource('light/categories').get({}, function(data){
             $scope.categories = data.categories;
+            Category.init($scope.categories, 2);
         });
     }])
     .controller('ViewCtrl', ['$scope', 'Tips', function($scope, Tips) {
@@ -16,8 +17,9 @@ angular.module('light.controllers', []).
             };
         });
     }])
-    .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', function($scope, $routeParams, Jobs) {
+    .controller('CategoryCtrl', ['$scope', '$routeParams', 'Jobs', 'Category', function($scope, $routeParams, Jobs, Category) {
         if ($routeParams.categoryId) {
+            Category.selected($routeParams.categoryId);
             $('#wrapper').toggleClass('active');
         }
         Jobs.get({categoryId: $routeParams.categoryId}, function(data) {
@@ -54,7 +56,10 @@ angular.module('light.controllers', []).
             }
         );
     }]).
-    controller('ModalCtrl', ['$scope', '$resource', 'Tips', function($scope, $resource, Tips) {
+    controller('ModalCtrl', ['$scope', '$resource', 'Tips', 'Category', function($scope, $resource, Tips, Category) {
+        $scope.$on('category.selected', function(event) {
+            $scope.category = Category.value;
+        });
         $scope.subscribe = {
             id: 'subscribe',
             label: '订阅职位',
@@ -62,7 +67,7 @@ angular.module('light.controllers', []).
                 var email = this.email;
                 $resource('light/subscription').save({
                     email: email,
-                    category: this.category.id
+                    category: $scope.category.id
                 }, function(data) {
                     if (data.code == 0) {
                         Tips.display('success', "提交成功，请<a href='mailto:" + email + "'>查收邮件</a>并确认你是邮箱的主人。");
@@ -80,7 +85,7 @@ angular.module('light.controllers', []).
                     company: this.company,
                     homepage: this.homepage,
                     logo: this.logo,
-                    category: this.category.id,
+                    category: $scope.category.id,
                     title: this.title,
                     description: this.description,
                     contact: this.contact

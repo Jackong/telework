@@ -59,12 +59,13 @@ angular.module('light.controllers', []).
             id: 'subscribe',
             label: '订阅职位',
             submit: function() {
+                var email = this.email;
                 $resource('light/subscription').save({
-                    email: this.email,
+                    email: email,
                     category: this.category.id
                 }, function(data) {
                     if (data.code == 0) {
-                        Tips.display('success', "提交成功，请<a href='mailto:" + this.email + "'>查收邮件</a>并确认你是邮箱的主人。");
+                        Tips.display('success', "提交成功，请<a href='mailto:" + email + "'>查收邮件</a>并确认你是邮箱的主人。");
                     } else {
                         Tips.display('warning', data.msg);
                     }

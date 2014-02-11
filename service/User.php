@@ -9,6 +9,7 @@ namespace service;
 
 
 use util\Mongo;
+use util\Redis;
 
 class User {
 
@@ -27,15 +28,11 @@ class User {
 
     public function __construct() {
         $this->user = Mongo::user("user");
+        $this->rSubscriber = Redis::select('subscriber');
     }
 
     public function subscribers($category, $from) {
-        $cursor = $this->user->find(array('category' => $category, 'from' => $from))->sort(array('time' => -1));
-        $ids = array();
-        foreach ($cursor as $doc) {
-            $ids[] = $doc['id'];
-        }
-        return $ids;
+        return $this->rSubscriber->sMembers("$category:$from");
     }
 
     public function subscribe($id, $from, $category = null) {
@@ -48,6 +45,7 @@ class User {
         );
         if (!is_null($category)) {
             $newObj["category"] = $category;
+            $this->rSubscriber->sAdd("$category:$from", $id);
         }
         $this->user->update(
             array(
@@ -61,7 +59,7 @@ class User {
         );
     }
 
-    public function unsubscribe($id, $from) {
+    public function unsubscribe($id, $from, $category = self::FROM_WECHAT) {
         $this->user->update(
             array(
                 "id" => $id,
@@ -71,5 +69,6 @@ class User {
                 "status" => self::STATUS_UNSUBSCRIBE,
             )
         );
+        $this->rSubscriber->sRem("$category:$from", $id);
     }
 } 

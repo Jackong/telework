@@ -31,7 +31,14 @@ class Service extends Config {
                     'confirm' => '362842fd51366804a4e8559469f967dd',
                     'subscription' => 'bb382ea44e288fea5d8743dc95dcbf9f',
                 )
-            )
+            ),
+            'redis' => array(
+                'subscriber' => array(
+                    'name' => 'vKorIkdNOFdYnYZHzqjI',
+                    'host' => 'redis.duapp.com',
+                    'port' => 80,
+                )
+            ),
         );
     }
 
@@ -49,6 +56,13 @@ class Service extends Config {
                     'port' => '27017',
                 ),
             ),
+            'redis' => array(
+                'subscriber' => array(
+                    'name' => 'subscriber',
+                    'host' => '127.0.0.1',
+                    'port' => 6379,
+                )
+            )
         );
     }
 }

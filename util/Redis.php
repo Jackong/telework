@@ -26,13 +26,13 @@ class Redis {
         $config = $service['redis'][$dbname];
         $ret = $redis->pconnect($config['host'], $config['port']);
         if ($ret === false) {
-            Log::Warning($redis->getLastError());
+            Log::Warning($redis->getLastError(), $dbname);
             return null;
         }
 
-        $ret = $redis->auth($service['ak'] . "-" . $service['sk'] . "-" . $dbname);
+        $ret = $redis->auth($service['ak'] . "-" . $service['sk'] . "-" . $config['name']);
         if ($ret === false) {
-            Log::Warning($redis->getLastError());
+            Log::Warning($redis->getLastError(), $dbname);
             return null;
         }
 

@@ -27,6 +27,6 @@ class Event extends Handler {
             return null;
         }
         $this->user->$event($fromUserName, User::FROM_WECHAT);
-        return Job::huntJobText();
+        return $this->text($fromUserName, "谢谢关注，远程工作为您服务:" . Job::huntJobText());
     }
 } 

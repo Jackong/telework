@@ -17,6 +17,9 @@ class User {
 
     const STATUS_SUBSCRIBE = 0;
     const STATUS_UNSUBSCRIBE = 1;
+
+    const FROM_EMAIL = "email";
+    const FROM_WECHAT = "wechat";
     /**
      * @var \MongoCollection
      */
@@ -24,6 +27,15 @@ class User {
 
     public function __construct() {
         $this->user = Mongo::user("user");
+    }
+
+    public function subscribers($category, $from) {
+        $cursor = $this->user->find(array('category' => $category, 'from' => $from))->sort(array('time' => -1));
+        $ids = array();
+        foreach ($cursor as $doc) {
+            $ids[] = $doc['id'];
+        }
+        return $ids;
     }
 
     public function subscribe($id, $from, $category = null) {

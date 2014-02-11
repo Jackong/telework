@@ -26,7 +26,7 @@ class Event extends Handler {
         if (!method_exists($this->user, $event)) {
             return null;
         }
-        $this->$event($fromUserName, "wechat");
+        $this->$event($fromUserName, User::FROM_WECHAT);
         return Job::huntJobText();
     }
 } 

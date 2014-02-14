@@ -12,7 +12,6 @@ use glob\config\source\_37Signals;
 use glob\config\Sys;
 use service\User;
 use Slim\Slim;
-use util\Bcms;
 use util\Encrypt;
 use util\Input;
 use util\Mail;
@@ -36,8 +35,7 @@ class Subscription {
         $user->subscribe(strtolower($email), User::FROM_EMAIL);
 
         $id = Encrypt::encrypt($email, Sys::get('salt'));
-        $ok = Mail::confirm("<!--HTML-->
-            <!doctype html>
+        $ok = Mail::confirm("<!doctype html>
             <html>
             <head>
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
@@ -47,7 +45,7 @@ class Subscription {
             如有您需要的职位，我们将会第一时间通知你。请点击以下链接，确认激活订阅（如非本人操作，请匆点击）：<br>
             <a href='http://telework.duapp.com/#/confirm/$id/$email/$category'>确认订阅</a>
             </body>
-            </html>", array($email));
+            </html>", $email);
         if ($ok) {
             Output::ok();
         }else {

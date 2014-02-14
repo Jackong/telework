@@ -15,7 +15,7 @@ foreach ($categories as $category => $_) {
         continue;
     }
     $body = file_get_contents("http://telework.duapp.com/#/jobs/$category");
-    \util\Mail::publish("<!--HTML-->$body", $ids);
+    \util\Mail::publish($body, $ids);
 }
 
 

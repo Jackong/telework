@@ -20,9 +20,8 @@ use util\Output;
 class Confirm {
 
     public function confirm($id, $email, $category) {
-        $deEmail = Encrypt::decrypt($id, Sys::get('salt'));
 
-        $ok = ($email === $deEmail);
+        $ok = md5($email . Sys::get('salt')) === $id;
 
         if ($ok) {
             $categoryName = _37Signals::get('categories', $category, 'lang', 1);
@@ -37,7 +36,7 @@ class Confirm {
             Output::error("订阅确认失败，这不是你的邮箱。");
         }
 
-        Log::Trace($ok, $email, $deEmail);
+        Log::Trace($ok, $email);
 
         $categories = _37Signals::get('categories');
         foreach ($categories as $id => $cate) {

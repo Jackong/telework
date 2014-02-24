@@ -34,7 +34,7 @@ class Confirm {
                 $user->subscribe(strtolower($email), "email", $category);
             }
         } else {
-            Output::error("订阅确认失败，这不是你的邮箱。");
+            Output::error("订阅确认失败，这不是你的邮箱。", $email, $deEmail);
         }
 
         Log::Trace($email, $ok);

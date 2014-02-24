@@ -16,7 +16,7 @@ class Mail {
     }
 
     public static function publish($body, array $to) {
-        return static::mail(Service::get('bcms', 'queue', 'subscription'), '最新自由人远程职位', $body, $to);
+       return static::mail(Service::get('bcms', 'queues', 'subscription'), '最新自由人远程职位', $body, $to);
     }
 
     public static function mail($id, $subject, $body, array $to, $from = "no-reply@telework.ws") {

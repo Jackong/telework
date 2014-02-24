@@ -79,5 +79,6 @@ foreach ($categories as $category => $_) {
 
     $jobsHtml = '';
     $jobsHtml = sprintf($tpl, $jobHtml);
-    \util\Mail::publish($jobsHtml, $subscribers);
+    $result = \util\Mail::publish($jobsHtml, $subscribers);
+    \util\Log::Debug('publish', $category, $result);
 }

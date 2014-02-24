@@ -65,7 +65,10 @@ foreach ($categories as $category => $_) {
     if (empty($subscribers)) {
         continue;
     }
-    $items = $job->gets($category, 5);
+    $items = $job->gets($category, 5, TIME - 86400 * 7);
+    if (empty($items)) {
+        continue;
+    }
     $jobHtml = '';
     foreach ($items as $item) {
         $jobHtml .= sprintf($jobTpl,

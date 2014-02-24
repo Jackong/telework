@@ -11,7 +11,7 @@ namespace service;
 use util\Mongo;
 
 class Job {
-    public function gets($category, $num) {
+    public function gets($category, $num, $after = 0) {
         $jobs = Mongo::job("jobs");
         $cursor = $jobs->find(
             array(
@@ -27,6 +27,9 @@ class Job {
         )->sort(array("pubTime" => -1));
         $items = array();
         foreach ($cursor as $doc) {
+            if ($after > 0 && $doc['pubTime'] < $after) {
+                continue;
+            }
             $id = $doc['id'];
             $count = count($items);
             $item["title"] = $doc["title"];

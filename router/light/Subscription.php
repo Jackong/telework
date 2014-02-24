@@ -34,7 +34,7 @@ class Subscription {
         $user = new User();
         $user->subscribe(strtolower($email), User::FROM_EMAIL);
 
-        $id = md5($email . Sys::get('sal'));
+        $id = md5($email . Sys::get('salt'));
         $ok = Mail::confirm("<!doctype html>
             <html>
             <head>

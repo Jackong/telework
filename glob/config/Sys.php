@@ -12,7 +12,7 @@ class Sys extends Config{
     protected function prod()
     {
         return array(
-            "salt" => "w#@!E!c#%@%&",
+            "salt" => "w5#2%*s&",
             'debug' => false,
         );
     }

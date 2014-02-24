@@ -34,10 +34,10 @@ class Confirm {
                 $user->subscribe(strtolower($email), "email", $category);
             }
         } else {
-            Output::error("订阅确认失败，这不是你的邮箱。", $email, $deEmail);
+            Output::error("订阅确认失败，这不是你的邮箱。");
         }
 
-        Log::Trace($email, $ok);
+        Log::Trace($ok, $email, $deEmail);
 
         $categories = _37Signals::get('categories');
         foreach ($categories as $id => $cate) {

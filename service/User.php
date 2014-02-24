@@ -32,7 +32,23 @@ class User {
     }
 
     public function subscribers($category, $from) {
-        return $this->rSubscriber->sMembers("$category:$from");
+        $subscribers = $this->rSubscriber->sMembers("$category:$from");
+        if (!empty($subscribers)) {
+            return $subscribers;
+        }
+        $cursor = $this->user->find(
+           array(
+               'category' => $category,
+               'from' => $from,
+           ),
+           array(
+                'id'
+           )
+        );
+        foreach ($cursor as $doc) {
+            $subscribers[] = $doc['id'];
+        }
+        return $subscribers;
     }
 
     public function subscribe($id, $from, $category = null) {

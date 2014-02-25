@@ -10,6 +10,7 @@ namespace router\light;
 
 use Slim\Slim;
 use util\Input;
+use util\Log;
 use util\Mongo;
 use util\Output;
 
@@ -21,6 +22,7 @@ class Feedback {
             'contact' => $contact,
             'content' => $content,
         ));
+        Log::Notice($_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT'], $_SERVER['HTTP_REFERER']);
         Output::ok();
     }
 }

@@ -15,7 +15,7 @@ use util\Output;
 
 class Feedback {
     public function submit() {
-        $contact = Input::get('contact', '/[0-9]{4,11}|([\w\-]+\@[\w\-]+\.[\w\-]+)/');
+        $contact = Input::get('contact', '/[0-9]{4,11}|([\w\-]+\@[\w\-]+\.[\w\-]+)/', "匿名");
         $content = Input::get('content', '/(.+?){5,255}/');
         Mongo::user('feedback')->insert(array(
             'contact' => $contact,

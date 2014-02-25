@@ -20,6 +20,7 @@ class Jobs {
         if ($categoryId == 0) {
             $categoryId = 2;
         }
+        Log::Debug($_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT'], $categoryId);
         $job = new Job();
         Output::set(
             array(

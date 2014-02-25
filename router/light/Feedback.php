@@ -22,7 +22,7 @@ class Feedback {
             'contact' => $contact,
             'content' => $content,
         ));
-        Log::Notice($_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT'], $_SERVER['HTTP_REFERER']);
+        Log::Notice($_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT']);
         Output::ok();
     }
 }

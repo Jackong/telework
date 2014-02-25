@@ -12,6 +12,9 @@ use util\Mongo;
 
 class Job {
     public function gets($category, $num, $after = 0) {
+        if ($after <= 0) {
+            $after = TIME - 86400 *  30;
+        }
         $jobs = Mongo::job("jobs");
         $cursor = $jobs->find(
             array(
@@ -27,7 +30,7 @@ class Job {
         )->sort(array("pubTime" => -1));
         $items = array();
         foreach ($cursor as $doc) {
-            if ($after > 0 && $doc['pubTime'] < $after) {
+            if ($doc['pubTime'] < $after) {
                 continue;
             }
             $id = $doc['id'];
@@ -37,7 +40,7 @@ class Job {
             $item["picUrl"] = isset($doc["img"]) ? $doc["img"] : "";
             $item['id'] = $id;
             $item['pubTime'] = date("Y-m-d H:i", $doc['pubTime']);
-            $item['source'] = 'weworkremotely.com';
+            //$item['source'] = 'weworkremotely.com';
             $items[] = $item;
             if ($count >= $num - 1) {
                 break;

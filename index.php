@@ -9,6 +9,10 @@ require PROJECT . '/lib/slim/Slim/Slim.php';
 
 $app = new \Slim\Slim(array(
     'debug' => \glob\config\Sys::get('debug'),
+    'cookies.encrypt' => true,
+    'cookies.secret_key' => '$3@T^4x)',
+    'cookies.cipher' => MCRYPT_RIJNDAEL_256,
+    'cookies.cipher_mode' => MCRYPT_MODE_CBC
 ));
 
 $app->add(new \Slim\Middleware\ContentTypes());
@@ -41,9 +45,13 @@ $app->error(function(Exception $e) use($app) {
     $app->halt(500, "sorry! server error");
 });
 
-session_start();
+$paths = explode('/', $app->request()->getResourceUri());
+if (count($paths) < 3) {
+    \util\Log::Fatal("Invalid request path", $app->request()->getResourceUri());
+    $app->halt(404, "Request not found");
+}
 
-list(, $group, $router) = explode('/', $app->request()->getResourceUri());
+list(, $group, $router) = $paths;
 $app->group("/$group", function() use ($group, $router, $app) {
     $router = ucfirst($router);
     $routerFile = PROJECT . "/router/$group/$router.php";

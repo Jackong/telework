@@ -11,16 +11,26 @@ namespace router\light;
 use glob\config\source\_37Signals;
 use service\Job;
 use Slim\Slim;
+use util\Input;
 use util\Log;
 use util\Output;
 
 class Jobs {
 
     public function jobs($categoryId) {
+        $app = Slim::getInstance();
+        $tcId = $app->getCookie('tc_id');
+        if (is_null($tcId) || empty($tcId)) {
+            $tcId = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+            $app->setCookie('tc_id', $tcId, '3 days', '/');
+        }
+
+
         if ($categoryId == 0) {
             $categoryId = 2;
         }
-        Log::Debug($_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT'], isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "", $categoryId);
+
+        Log::Debug($tcId, $categoryId, $_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT']);
         $job = new Job();
         Output::set(
             array(

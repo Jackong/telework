@@ -45,19 +45,21 @@ $app->error(function(Exception $e) use($app) {
     $app->halt(500, "sorry! server error");
 });
 
-$paths = explode('/', $app->request()->getResourceUri());
+$request = $app->request();
+$paths = explode('/', $request->getResourceUri());
 if (count($paths) < 3) {
-    \util\Log::Fatal("Invalid request path", $app->request()->getResourceUri());
-    $app->halt(404, "Request not found");
+    \util\Log::Fatal("Invalid request path", $request->getResourceUri(), $request->getIp(), $request->getUserAgent());
+    $app->status(404);
+    \util\Output::error("Not found", \util\Output::CODE_FAILURE);
+} else {
+    list(, $group, $router) = $paths;
+    $app->group("/$group", function() use ($group, $router, $app) {
+        $router = ucfirst($router);
+        $routerFile = PROJECT . "/router/$group/$router.php";
+        if (file_exists($routerFile)) {
+            require_once $routerFile;
+        }
+    });
 }
-
-list(, $group, $router) = $paths;
-$app->group("/$group", function() use ($group, $router, $app) {
-    $router = ucfirst($router);
-    $routerFile = PROJECT . "/router/$group/$router.php";
-    if (file_exists($routerFile)) {
-        require_once $routerFile;
-    }
-});
 
 $app->run();

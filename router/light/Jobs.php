@@ -19,9 +19,10 @@ class Jobs {
 
     public function jobs($categoryId) {
         $app = Slim::getInstance();
+        $request = $app->request();
         $tcId = $app->getCookie('tc_id');
         if (is_null($tcId) || empty($tcId)) {
-            $tcId = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+            $tcId = md5($request->getIp(), $request->getUserAgent());
             $app->setCookie('tc_id', $tcId, '3 days', '/');
         }
 
@@ -30,7 +31,7 @@ class Jobs {
             $categoryId = 2;
         }
 
-        Log::Debug($tcId, $categoryId, $_SERVER['REMOTE_ADDR'],  $_SERVER['HTTP_USER_AGENT']);
+        Log::Debug($tcId, $categoryId, $request->getIp(), $request->getUserAgent());
         $job = new Job();
         Output::set(
             array(

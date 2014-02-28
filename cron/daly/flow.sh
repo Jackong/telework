@@ -1,7 +1,9 @@
 #!/bin/bash
 date=$(date -d '-1 days' +"%Y-%m-%d")
 result="/home/bae/log/flow.log.$date"
-grep "router\\\light\\\Jobs:jobs" /home/bae/log/user.log.$date | awk -F '|' '{if(length($2)==32){print $3"|"$2}}' | sort | uniq >/tmp/flow.log
+grep "router\\\light\\\Jobs:jobs" /home/bae/log/user.log.$date | awk -F '|' '{
+    print $3"|"$2
+}' | sort | uniq >/tmp/flow.log
 awk -v date=$date -F '|' '{
         categories[$1]+=1;
     }END{

@@ -21,17 +21,16 @@ class Jobs {
         $app = Slim::getInstance();
         $request = $app->request();
         $tcId = $app->getCookie('tc_id');
-        if (is_null($tcId) || empty($tcId)) {
-            $tcId = md5($request->getIp(), $request->getUserAgent());
-            $app->setCookie('tc_id', $tcId, '3 days', '/');
+        if (is_null($tcId) || empty($tcId) || strlen($tcId) != 32) {
+            $tcId = md5($request->getIp() . $request->getUserAgent());
+            $app->setCookie('tc_id', $tcId, '30 days', '/');
         }
-
+        Log::Debug($tcId, $categoryId, $request->getIp(), $request->getUserAgent());
 
         if ($categoryId == 0) {
             $categoryId = 2;
         }
 
-        Log::Debug($tcId, $categoryId, $request->getIp(), $request->getUserAgent());
         $job = new Job();
         Output::set(
             array(
